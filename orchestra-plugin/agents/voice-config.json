@@ -159,40 +159,79 @@
     }
   },
   "short_phrases": {
-    "alex": [
-      "Task complete.",
-      "All set.",
-      "Ready to proceed.",
-      "Scoped and ready.",
-      "Gate passed."
-    ],
-    "eden": [
-      "Tests pass.",
-      "QA complete.",
-      "All checks good.",
-      "Quality verified.",
-      "Edge cases covered."
-    ],
-    "iris": [
-      "Security checked.",
-      "No vulnerabilities.",
-      "Secrets secured.",
-      "Safe to proceed.",
-      "Permissions validated."
-    ],
-    "mina": [
-      "UI ready.",
-      "Design complete.",
-      "Looks great.",
-      "Accessible and responsive.",
-      "User flow tested."
-    ],
-    "theo": [
-      "Deployment successful.",
-      "System stable.",
-      "Monitoring active.",
-      "All metrics green.",
-      "Operations nominal."
-    ]
+    "en": {
+      "alex": [
+        "Task complete.",
+        "All set.",
+        "Ready to proceed.",
+        "Scoped and ready.",
+        "Gate passed."
+      ],
+      "eden": [
+        "Tests pass.",
+        "QA complete.",
+        "All checks good.",
+        "Quality verified.",
+        "Edge cases covered."
+      ],
+      "iris": [
+        "Security checked.",
+        "No vulnerabilities.",
+        "Secrets secured.",
+        "Safe to proceed.",
+        "Permissions validated."
+      ],
+      "mina": [
+        "UI ready.",
+        "Design complete.",
+        "Looks great.",
+        "Accessible and responsive.",
+        "User flow tested."
+      ],
+      "theo": [
+        "Deployment successful.",
+        "System stable.",
+        "Monitoring active.",
+        "All metrics green.",
+        "Operations nominal."
+      ]
+    },
+    "ja": {
+      "alex": [
+        "タスク完了。",
+        "準備完了。",
+        "次に進めます。",
+        "スコープ完了。",
+        "ゲート通過。"
+      ],
+      "eden": [
+        "テスト合格。",
+        "品質確認完了。",
+        "チェック完了。",
+        "品質検証済み。",
+        "エッジケース対応済み。"
+      ],
+      "iris": [
+        "セキュリティ確認済み。",
+        "脆弱性なし。",
+        "シークレット保護済み。",
+        "安全に進めます。",
+        "権限検証済み。"
+      ],
+      "mina": [
+        "UI準備完了。",
+        "デザイン完成。",
+        "見栄え良好。",
+        "アクセシブル対応済み。",
+        "ユーザーフロー確認済み。"
+      ],
+      "theo": [
+        "デプロイ成功。",
+        "システム安定。",
+        "監視中。",
+        "全メトリクス正常。",
+        "運用正常。"
+      ]
+    }
   }
 }

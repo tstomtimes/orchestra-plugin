@@ -194,21 +194,33 @@ class ElevenLabsMCPServer:
         """Announce task completion with agent's voice"""
         import random
 
+        # Get language setting from environment
+        language = os.getenv("COMMIT_LANGUAGE", "en")
+
         # Get agent config
         agent_config = self.voice_config.get("agents", {}).get(agent_name.lower(), {})
 
         # Use short phrases to minimize token usage (2-6 words)
-        short_phrases = self.voice_config.get("short_phrases", {}).get(agent_name.lower(), [])
+        # Get phrases for the specified language
+        short_phrases_all = self.voice_config.get("short_phrases", {})
+        short_phrases = short_phrases_all.get(language, {}).get(agent_name.lower(), [])
+
+        # Fallback to English if language not found
+        if not short_phrases:
+            short_phrases = short_phrases_all.get("en", {}).get(agent_name.lower(), [])
 
         if short_phrases:
             # Pick a random short phrase for variety
             voice_message = random.choice(short_phrases)
         else:
             # Fallback to generic completion message
-            voice_message = "Task complete."
+            voice_message = "Task complete." if language == "en" else "タスク完了。"
 
         # Text message is more detailed (shown in console)
-        text_message = f"{agent_config.get('speaking_style', {}).get('phrases', [''])[0]} {task_description} is complete."
+        if language == "ja":
+            text_message = f"{task_description}が完了しました。"
+        else:
+            text_message = f"{agent_config.get('speaking_style', {}).get('phrases', [''])[0]} {task_description} is complete."
 
         # Generate voice with short message
         result = self.speak_as_agent(agent_name, voice_message)
