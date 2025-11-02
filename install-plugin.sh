@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Orchestra Plugin Installation Script
-# Install Orchestra Plugin to any project using Claude Code
+# ⚠️  DEPRECATED: This script is deprecated. Use setup.sh instead.
 
 set -e
 
@@ -11,11 +11,53 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+echo -e "${RED}"
+cat << "EOF"
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║        ⚠️  DEPRECATED: Use setup.sh instead              ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+EOF
+echo -e "${NC}"
+
+echo -e "${YELLOW}"
+cat << "EOF"
+
+This script is deprecated because MCP servers are required for Orchestra Plugin.
+
+Please use the following installation method instead:
+
+1. Clone the Orchestra repository:
+   git clone https://github.com/tstomtimes/orchestra.git
+   cd orchestra
+
+2. Run the setup script:
+   ./setup.sh
+
+3. In Claude Code, add the plugin:
+   /plugin marketplace add /path/to/orchestra
+   /plugin install orchestra
+
+4. Restart Claude Code
+
+For more information, see: https://github.com/tstomtimes/orchestra
+
+EOF
+echo -e "${NC}"
+
+read -p "$(echo -e ${YELLOW}Do you want to continue with this deprecated script anyway? [y/N]: ${NC})" -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo -e "${BLUE}Installation cancelled. Please use setup.sh instead.${NC}"
+    exit 0
+fi
+
 echo -e "${BLUE}"
 cat << "EOF"
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║        🎼 Orchestra Plugin Installer                      ║
+║        🎼 Orchestra Plugin Installer (Deprecated)         ║
 ║        AI-Powered Development Workflow Automation         ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝

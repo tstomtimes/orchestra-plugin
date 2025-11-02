@@ -20,26 +20,9 @@ English | [日本語](README.ja.md)
 
 ## Quick Start
 
-### Option 1: Install to Any Project (Recommended)
+### Installation
 
-Run this command in your project directory:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra/main/install-plugin.sh | bash
-```
-
-Then in Claude Code, run:
-
-```
-/plugin marketplace add tstomtimes/orchestra
-/plugin install orchestra
-```
-
-Restart Claude Code and you're ready to go!
-
-### Option 2: Install for Plugin Development
-
-If you want to contribute to Orchestra Plugin or customize it:
+Orchestra Plugin requires MCP servers to be set up locally. Follow these steps:
 
 #### 1. Clone and Configure
 
@@ -50,15 +33,26 @@ cp .env.example .env
 # Edit .env with your GitHub token (required) and optional service tokens
 ```
 
-#### 2. Install
+#### 2. Run Setup Script
 
 ```bash
 ./setup.sh
 ```
 
-That's it! The setup script installs everything automatically.
+This installs:
+- Node.js dependencies (Express, Playwright, TypeScript)
+- Playwright Chromium browser for automation
+- Python virtual environment and packages (elevenlabs, requests)
+- All MCP servers (Browser, GitHub, Vercel, Shopify, Slack, etc.)
+- Hooks and quality gates
 
-#### 3. Add to Claude Code
+Alternatively, you can run the setup from within Claude Code:
+
+```
+/orchestra-setup
+```
+
+#### 3. Install Plugin in Claude Code
 
 In Claude Code, run:
 
@@ -66,6 +60,10 @@ In Claude Code, run:
 /plugin marketplace add /path/to/orchestra
 /plugin install orchestra
 ```
+
+Replace `/path/to/orchestra` with the full path to your cloned repository.
+
+#### 4. Restart Claude Code
 
 Restart Claude Code to activate all features.
 

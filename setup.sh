@@ -182,29 +182,29 @@ echo -e "${BLUE}📋 Next steps:${NC}\n"
 
 echo -e "${YELLOW}1. Configure API keys in .env:${NC}"
 echo -e "   ${BLUE}vim .env${NC}"
+echo -e "   ${BLUE}# Required: GITHUB_TOKEN${NC}"
+echo -e "   ${BLUE}# Optional: VERCEL_TOKEN, SHOPIFY_ADMIN_TOKEN, ELEVENLABS_API_KEY, etc.${NC}"
 echo ""
 
-echo -e "${YELLOW}2. Start the Browser MCP server:${NC}"
-echo -e "   ${BLUE}cd orchestra/mcp-servers${NC}"
-echo -e "   ${BLUE}npm run browser &${NC}"
+echo -e "${YELLOW}2. Install the plugin in Claude Code:${NC}"
+echo -e "   ${BLUE}In Claude Code, run the following commands:${NC}"
+echo -e "   ${GREEN}/plugin marketplace add $PROJECT_ROOT${NC}"
+echo -e "   ${GREEN}/plugin install orchestra${NC}"
 echo ""
 
-echo -e "${YELLOW}3. Test browser automation:${NC}"
-echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh init${NC}"
-echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh navigate https://example.com${NC}"
-echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh screenshot example.png true${NC}"
-echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh close${NC}"
+echo -e "${YELLOW}3. Restart Claude Code to activate all features${NC}"
 echo ""
 
-echo -e "${YELLOW}4. Test voice notifications (if ELEVENLABS_API_KEY is set):${NC}"
-echo -e "   ${BLUE}./orchestra/mcp-servers/play-voice.sh alex task${NC}"
+echo -e "${YELLOW}4. Available features after restart:${NC}"
+echo -e "   ${BLUE}• /orchestra-setup - Re-run this setup if needed${NC}"
+echo -e "   ${BLUE}• /browser - Start Browser MCP server${NC}"
+echo -e "   ${BLUE}• /screenshot - Capture web screenshots${NC}"
+echo -e "   ${BLUE}• 12 specialized AI agents (Alex, Riley, Skye, Finn, Eden, Kai, Leo, Iris, Nova, Mina, Theo, Blake)${NC}"
+echo -e "   ${BLUE}• Automated quality gates (before_task, before_pr, before_merge, before_deploy, after_deploy)${NC}"
+echo -e "   ${BLUE}• Multi-agent orchestration with parallel execution${NC}"
 echo ""
 
-echo -e "${YELLOW}5. Test auto-commit:${NC}"
-echo -e "   ${BLUE}./orchestra/mcp-servers/auto-commit.sh feat \"to add new feature\" \"Add cool functionality\" \"Alex\"${NC}"
-echo ""
-
-echo -e "${GREEN}🎉 Happy orchestrating!${NC}\n"
+echo -e "${GREEN}🎉 Setup complete! Install the plugin in Claude Code to start orchestrating!${NC}\n"
 
 # Optional: Auto-start browser server
 read -p "$(echo -e ${YELLOW}Would you like to start the Browser MCP server now? [y/N]: ${NC})" -n 1 -r

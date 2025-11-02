@@ -20,26 +20,9 @@ Claude Codeを**半自律的な開発チーム**に変えるプラグイン。�
 
 ## クイックスタート
 
-### 方法1: 任意のプロジェクトにインストール（推奨）
+### インストール
 
-プロジェクトディレクトリで以下のコマンドを実行：
-
-```bash
-curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra/main/install-plugin.sh | bash
-```
-
-次に、Claude Codeで以下を実行：
-
-```
-/plugin marketplace add tstomtimes/orchestra
-/plugin install orchestra
-```
-
-Claude Codeを再起動すれば準備完了です！
-
-### 方法2: プラグイン開発用インストール
-
-Orchestra Pluginに貢献したい、またはカスタマイズしたい場合：
+Orchestra PluginはMCPサーバーのローカルセットアップが必要です。以下の手順に従ってください：
 
 #### 1. クローンと設定
 
@@ -50,15 +33,26 @@ cp .env.example .env
 # .envファイルにGitHubトークン（必須）とオプションのサービストークンを設定
 ```
 
-#### 2. インストール
+#### 2. セットアップスクリプトを実行
 
 ```bash
 ./setup.sh
 ```
 
-これだけです！セットアップスクリプトがすべて自動でインストールします。
+以下がインストールされます：
+- Node.js依存関係（Express、Playwright、TypeScript）
+- Playwright Chromiumブラウザ（自動化用）
+- Python仮想環境とパッケージ（elevenlabs、requests）
+- すべてのMCPサーバー（Browser、GitHub、Vercel、Shopify、Slack等）
+- フックと品質ゲート
 
-#### 3. Claude Codeに追加
+または、Claude Code内からセットアップを実行することもできます：
+
+```
+/orchestra-setup
+```
+
+#### 3. Claude Codeにプラグインをインストール
 
 Claude Codeで以下を実行：
 
@@ -66,6 +60,10 @@ Claude Codeで以下を実行：
 /plugin marketplace add /path/to/orchestra
 /plugin install orchestra
 ```
+
+`/path/to/orchestra`をクローンしたリポジトリのフルパスに置き換えてください。
+
+#### 4. Claude Codeを再起動
 
 Claude Codeを再起動してすべての機能を有効化します。
 
