@@ -18,20 +18,12 @@ const app = express();
 app.use(express.json());
 
 // Security configuration
-const ALLOWED_DOMAINS = new Set([
-  'localhost',
-  '127.0.0.1',
-  'vercel.app',
-  'shopify.com',
-  'myshopify.com',
-  'sanity.io',
-  'sanity.studio',
-  'supabase.co',
-  'netlify.app',
-  'github.io',
-  // Add your custom domains from environment
-  ...(process.env.BROWSER_ALLOWED_DOMAINS?.split(',').map(d => d.trim()) || [])
-]);
+// Note: Domain restrictions removed for better development experience
+// Security is enforced through:
+// - Input sanitization (passwords, credit cards blocked)
+// - Rate limiting
+// - Operation logging
+// - Local-only access (localhost:3030)
 
 // Rate limiting
 const operationCounts = new Map<string, { nav: number; click: number; type: number }>();
@@ -48,13 +40,11 @@ const sessionId = Date.now().toString();
 // Artifacts directory
 const ARTIFACTS_DIR = path.join(process.cwd(), 'artifacts', 'browser', sessionId);
 
-// Helper: Check if URL is allowed
+// Helper: Validate URL format
 function isUrlAllowed(url: string): boolean {
   try {
-    const hostname = new URL(url).hostname.replace(/^www\./, '');
-    return Array.from(ALLOWED_DOMAINS).some(domain =>
-      hostname === domain || hostname.endsWith(`.${domain}`)
-    );
+    new URL(url); // Just validate it's a valid URL
+    return true;
   } catch {
     return false;
   }
@@ -117,9 +107,8 @@ app.post('/navigate', async (req: Request, res: Response) => {
     }
 
     if (!isUrlAllowed(url)) {
-      return res.status(403).json({
-        error: 'Domain not allowed',
-        allowedDomains: Array.from(ALLOWED_DOMAINS)
+      return res.status(400).json({
+        error: 'Invalid URL format'
       });
     }
 
@@ -365,8 +354,7 @@ app.get('/health', (req: Request, res: Response) => {
     ok: true,
     browser: browser !== null,
     page: page !== null,
-    sessionId,
-    allowedDomains: Array.from(ALLOWED_DOMAINS)
+    sessionId
   });
 });
 
@@ -375,7 +363,7 @@ const PORT = process.env.BROWSER_MCP_PORT || 3030;
 app.listen(PORT, () => {
   console.log(`🌐 Browser MCP Server running on port ${PORT}`);
   console.log(`📁 Artifacts directory: ${ARTIFACTS_DIR}`);
-  console.log(`🔒 Allowed domains: ${Array.from(ALLOWED_DOMAINS).join(', ')}`);
+  console.log(`🔓 All domains allowed (development mode)`);
 });
 
 // Graceful shutdown

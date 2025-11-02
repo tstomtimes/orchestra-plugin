@@ -12,16 +12,37 @@ A multi-agent orchestration layer that turns Claude Code into a semi-autonomous 
 
 ## Installation
 
+**Quick Setup (Recommended):**
+```bash
+git clone https://github.com/tstomtimes/orchestra-plugin.git
+cd orchestra-plugin
+./setup.sh
+```
+
+The setup script will:
+- ✅ Check prerequisites (Node.js 18+, Python 3.8+)
+- ✅ Install all MCP server dependencies (Node.js, Playwright, Python packages)
+- ✅ Set up Python virtual environment
+- ✅ Create `.env` file from template
+- ✅ Configure executable permissions
+- ✅ Create artifacts directories
+- ✅ Optionally start the Browser MCP server
+
+**Manual Setup:**
 1. Clone this repository:
    ```bash
    git clone https://github.com/tstomtimes/orchestra-plugin.git
    cd orchestra-plugin
    ```
 
-2. Install MCP servers:
+2. Install dependencies:
    ```bash
    cd orchestra-plugin/mcp-servers
-   ./install.sh
+   npm install
+   npx playwright install chromium
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install elevenlabs requests python-dotenv
    ```
 
 3. Configure environment variables (see [.env.example](.env.example)):
@@ -114,20 +135,11 @@ This plugin includes ready-to-use MCP servers for seamless integration with popu
 
 ### Quick Start
 
+**All servers are automatically set up with `./setup.sh`**
+
 ```bash
-# Install Python MCP servers
+# Start Browser MCP Server (already installed by setup.sh)
 cd orchestra-plugin/mcp-servers
-./install.sh
-
-# Test GitHub integration
-echo '{"command":"list_prs","params":{"owner":"myorg","repo":"myrepo"}}' | python3 github-server.py
-
-# Test Shopify integration
-echo '{"command":"list_themes","params":{}}' | python3 shopify-server.py
-
-# Install and start Browser MCP Server
-npm install
-npm run install-browser
 npm run browser &
 
 # Test browser automation

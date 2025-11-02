@@ -39,7 +39,7 @@ check_server() {
 case "${1:-help}" in
     init)
         check_server
-        api_call "init" | jq
+        curl -s -X POST "$BROWSER_URL/init" | jq
         ;;
 
     navigate|nav|open)
@@ -105,7 +105,7 @@ case "${1:-help}" in
 
     content|html)
         check_server
-        api_call "content" | jq
+        curl -s -X POST "$BROWSER_URL/content" | jq
         ;;
 
     eval|evaluate)
@@ -120,12 +120,12 @@ case "${1:-help}" in
 
     close|quit)
         check_server
-        api_call "close" | jq
+        curl -s -X POST "$BROWSER_URL/close" | jq
         ;;
 
     health|status)
         check_server
-        api_call "health" | jq
+        curl -s "$BROWSER_URL/health" | jq
         ;;
 
     help|--help|-h)

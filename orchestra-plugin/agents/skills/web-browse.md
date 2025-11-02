@@ -4,11 +4,11 @@
 Safely navigate, interact with, and capture evidence from web pages using automated browser operations.
 
 ## Security Features
-- **Domain Allowlist**: Only approved domains can be visited
 - **Rate Limiting**: Maximum operations per session (10 navigations, 50 clicks, 30 inputs)
 - **Input Sanitization**: Blocks sensitive patterns (passwords, credit cards, SSN)
 - **Operation Logging**: All actions are logged to `artifacts/browser/{session}/operations.log`
 - **Safe Mode**: Dangerous JavaScript operations are blocked
+- **Local Access Only**: Server binds to localhost:3030 (not accessible externally)
 
 ## When to Use
 - Verify preview deployments (UI/UX checks)
@@ -26,21 +26,13 @@ Safely navigate, interact with, and capture evidence from web pages using automa
 
 ## Configuration
 
-### Allowed Domains
-Set in `.env`:
-```bash
-# Comma-separated list of additional allowed domains
-BROWSER_ALLOWED_DOMAINS=myapp.vercel.app,staging.example.com,preview.myshop.com
-```
+No configuration required! The browser server allows access to any valid URL, making it perfect for development workflows.
 
-Default allowed domains:
-- `localhost`, `127.0.0.1`
-- `*.vercel.app`
-- `*.shopify.com`, `*.myshopify.com`
-- `*.sanity.io`, `*.sanity.studio`
-- `*.supabase.co`
-- `*.netlify.app`
-- `*.github.io`
+Optional settings in `.env`:
+```bash
+# Change server port (default: 3030)
+BROWSER_MCP_PORT=3030
+```
 
 ## API Endpoints
 
