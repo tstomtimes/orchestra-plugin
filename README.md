@@ -14,17 +14,23 @@ A multi-agent orchestration layer that turns Claude Code into a semi-autonomous 
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/orchestra-plugin.git
+   git clone https://github.com/tstomtimes/orchestra-plugin.git
    cd orchestra-plugin
    ```
 
-2. Configure environment variables (see [.env.example](.env.example)):
+2. Install MCP servers:
    ```bash
-   cp .env.example .env
-   # Edit .env with your tokens
+   cd orchestra-plugin/mcp-servers
+   ./install.sh
    ```
 
-3. In Claude Code, add the plugin and point to `.claude-plugin/manifest.json`.
+3. Configure environment variables (see [.env.example](.env.example)):
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API tokens
+   ```
+
+4. In Claude Code, add the plugin and point to `.claude-plugin/manifest.json`.
 
 ## Required Environment Variables
 
@@ -53,6 +59,19 @@ orchestra-plugin/
 │   ├── skills-map.yaml
 │   └── skills-overview.yaml
 ├── hooks/           # Quality gate scripts
+│   ├── before_task.sh
+│   ├── before_pr.sh
+│   ├── before_merge.sh
+│   ├── before_deploy.sh
+│   └── after_deploy.sh
+├── mcp-servers/     # MCP Server implementations
+│   ├── github-server.py
+│   ├── shopify-server.py
+│   ├── vercel-server.py
+│   ├── slack-server.py
+│   ├── install.sh
+│   ├── requirements.txt
+│   └── README.md
 └── mcp.json         # Service configurations
 ```
 
@@ -78,6 +97,52 @@ orchestra-plugin/
 # 4. Enforce pre-merge checks
 # 5. Generate documentation
 ```
+
+## MCP Servers
+
+This plugin includes ready-to-use MCP servers for seamless integration with popular services:
+
+### Available Servers
+
+- **GitHub MCP Server** - PR management, repo access, issue tracking
+- **Shopify MCP Server** - Theme development, asset management, validation
+- **Vercel MCP Server** - Deployment management, monitoring, logs
+- **Slack MCP Server** - Notifications, deployment alerts, team communication
+
+### Quick Start
+
+```bash
+# Install MCP servers
+cd orchestra-plugin/mcp-servers
+./install.sh
+
+# Test GitHub integration
+echo '{"command":"list_prs","params":{"owner":"myorg","repo":"myrepo"}}' | python3 github-server.py
+
+# Test Shopify integration
+echo '{"command":"list_themes","params":{}}' | python3 shopify-server.py
+```
+
+For detailed usage instructions, see [mcp-servers/README.md](orchestra-plugin/mcp-servers/README.md).
+
+## Hooks
+
+Orchestra Plugin includes production-ready hooks for quality gates:
+
+### Available Hooks
+
+- [before_task.sh](orchestra-plugin/hooks/before_task.sh) - Validates task clarity and acceptance criteria
+- [before_pr.sh](orchestra-plugin/hooks/before_pr.sh) - Runs linting, type checking, tests, secret scanning, and SBOM generation
+- [before_merge.sh](orchestra-plugin/hooks/before_merge.sh) - Executes E2E tests, Lighthouse CI, and visual regression tests
+- [before_deploy.sh](orchestra-plugin/hooks/before_deploy.sh) - Validates env vars, DB migrations, health checks, and builds
+- [after_deploy.sh](orchestra-plugin/hooks/after_deploy.sh) - Runs smoke tests, generates rollout status, sends notifications
+
+### Hook Features
+
+- Auto-detects project type (Node.js, Python, Docker, etc.)
+- Gracefully skips checks when tools are not installed
+- Provides clear error messages and installation instructions
+- Supports multiple frameworks (Prisma, Django, Alembic, Playwright, pytest, etc.)
 
 ## Safety & Best Practices
 

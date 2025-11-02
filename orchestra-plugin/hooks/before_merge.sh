@@ -2,4 +2,52 @@
 #!/usr/bin/env bash
 set -euo pipefail
 echo "[before_merge] Running integration/E2E/Lighthouse..."
-# TODO: playwright, lighthouse-ci
+
+# E2E tests with Playwright
+if [ -f "playwright.config.ts" ] || [ -f "playwright.config.js" ]; then
+  echo "→ Running Playwright E2E tests..."
+  npx playwright test --reporter=list || {
+    echo "❌ Playwright tests failed. Please fix failing E2E tests before merging."
+    exit 1
+  }
+
+  # Generate HTML report for review
+  echo "→ Generating Playwright test report..."
+  npx playwright show-report --host 127.0.0.1 &
+  echo "   Report available at: http://127.0.0.1:9323"
+else
+  echo "⚠️  Playwright not configured. Skipping E2E tests."
+  echo "   Setup: npm init playwright@latest"
+fi
+
+# Lighthouse CI for performance/accessibility/SEO checks
+if [ -f "lighthouserc.json" ] || [ -f ".lighthouserc.json" ]; then
+  echo "→ Running Lighthouse CI..."
+
+  # Start dev server in background if needed
+  if command -v lhci &> /dev/null; then
+    lhci autorun || {
+      echo "❌ Lighthouse CI failed. Performance/accessibility/SEO checks did not meet thresholds."
+      exit 1
+    }
+  else
+    echo "⚠️  Lighthouse CI not installed. Skipping performance checks."
+    echo "   Install: npm install -g @lhci/cli"
+  fi
+else
+  echo "⚠️  Lighthouse CI not configured. Skipping performance/accessibility/SEO checks."
+  echo "   Setup: Create lighthouserc.json with your configuration"
+fi
+
+# Optional: Visual regression testing with Percy or similar
+if [ -n "${PERCY_TOKEN:-}" ]; then
+  echo "→ Running visual regression tests..."
+  npx percy exec -- npx playwright test || {
+    echo "❌ Visual regression tests failed."
+    exit 1
+  }
+else
+  echo "ℹ️  Percy not configured. Skipping visual regression tests."
+fi
+
+echo "✅ All pre-merge checks passed!"
