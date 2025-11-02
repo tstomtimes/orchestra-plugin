@@ -94,7 +94,7 @@
     "ask": []
   },
   "enabledPlugins": {
-    "orchestra-plugin@orchestra-marketplace": true
+    "orchestra@orchestra-marketplace": true
   },
   "extraKnownMarketplaces": {
     "orchestra-marketplace": {

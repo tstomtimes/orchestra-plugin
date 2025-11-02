@@ -74,7 +74,7 @@ COMMIT_MESSAGE="${PREFIX}: ${ACTION} (${REASON})"
 if [ -n "$AGENT" ]; then
     AGENT_FOOTER="
 
-Co-Authored-By: ${AGENT} <noreply@orchestra-plugin>"
+Co-Authored-By: ${AGENT} <noreply@orchestra>"
 else
     AGENT_FOOTER=""
 fi

@@ -23,7 +23,7 @@ Restart the Browser MCP server on port 9222. If already running, stop it first t
 
 3. Start the server in the background:
    ```bash
-   cd orchestra-plugin/mcp-servers && npm run browser &
+   cd orchestra/mcp-servers && npm run browser &
    ```
 
 4. Wait for startup and verify:
@@ -37,12 +37,12 @@ Restart the Browser MCP server on port 9222. If already running, stop it first t
    👁️  Browser mode: GUI visible (set BROWSER_HEADLESS=true for headless mode)
 
    Quick test:
-   ./orchestra-plugin/mcp-servers/browser-helper.sh init
-   ./orchestra-plugin/mcp-servers/browser-helper.sh navigate https://example.com
-   ./orchestra-plugin/mcp-servers/browser-helper.sh screenshot example.png true
-   ./orchestra-plugin/mcp-servers/browser-helper.sh close
+   ./orchestra/mcp-servers/browser-helper.sh init
+   ./orchestra/mcp-servers/browser-helper.sh navigate https://example.com
+   ./orchestra/mcp-servers/browser-helper.sh screenshot example.png true
+   ./orchestra/mcp-servers/browser-helper.sh close
 
-   See: orchestra-plugin/agents/skills/web-browse.md for full documentation
+   See: orchestra/agents/skills/web-browse.md for full documentation
    ```
 
 ## Notes

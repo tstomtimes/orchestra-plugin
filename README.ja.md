@@ -1,4 +1,4 @@
-# Orchestra Plugin for Claude Code
+# Orchestra for Claude Code
 
 Claude Codeを**半自律的な開発チーム**に変えるプラグイン。専門的なAIエージェント、自動品質ゲート、シームレスな連携機能を提供します。
 
@@ -25,14 +25,14 @@ Claude Codeを**半自律的な開発チーム**に変えるプラグイン。�
 プロジェクトディレクトリで以下のコマンドを実行：
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra-plugin/main/install-plugin.sh | bash
+curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra/main/install-plugin.sh | bash
 ```
 
 次に、Claude Codeで以下を実行：
 
 ```
-/plugin marketplace add tstomtimes/orchestra-plugin
-/plugin install orchestra-plugin
+/plugin marketplace add tstomtimes/orchestra
+/plugin install orchestra
 ```
 
 Claude Codeを再起動すれば準備完了です！
@@ -44,8 +44,8 @@ Orchestra Pluginに貢献したい、またはカスタマイズしたい場合�
 #### 1. クローンと設定
 
 ```bash
-git clone https://github.com/tstomtimes/orchestra-plugin.git
-cd orchestra-plugin
+git clone https://github.com/tstomtimes/orchestra.git
+cd orchestra
 cp .env.example .env
 # .envファイルにGitHubトークン（必須）とオプションのサービストークンを設定
 ```
@@ -63,8 +63,8 @@ cp .env.example .env
 Claude Codeで以下を実行：
 
 ```
-/plugin marketplace add /path/to/orchestra-plugin
-/plugin install orchestra-plugin
+/plugin marketplace add /path/to/orchestra
+/plugin install orchestra
 ```
 
 Claude Codeを再起動してすべての機能を有効化します。
@@ -197,7 +197,7 @@ ELEVENLABS_API_KEY=your_elevenlabs_key  # 音声通知用
 ## プロジェクト構成
 
 ```
-orchestra-plugin/
+orchestra/
 ├── agents/           # AIエージェント（Alex、Eden、Iris、Mina、Theoなど）
 ├── skills/           # 再利用可能な機能
 ├── hooks/            # 品質ゲートスクリプトと自動承認フック
@@ -210,7 +210,7 @@ orchestra-plugin/
 
 ### カスタムスラッシュコマンド
 
-[orchestra-plugin/.claude/commands/](orchestra-plugin/.claude/commands/) で利用可能なコマンド：
+[orchestra/.claude/commands/](orchestra/.claude/commands/) で利用可能なコマンド：
 - `/browser` - ブラウザ自動化サーバーを起動/再起動
 - `/screenshot` - ブラウザからスクリーンショットを取得
 
@@ -228,7 +228,7 @@ orchestra-plugin/
 
 ### フックのカスタマイズ
 
-フックは [hooks/](orchestra-plugin/hooks/) にあり、完全にカスタマイズ可能です。各フック：
+フックは [hooks/](orchestra/hooks/) にあり、完全にカスタマイズ可能です。各フック：
 - プロジェクトタイプを自動検出
 - ツールが利用できない場合は自動的にスキップ
 - 明確なエラーメッセージを提供
@@ -253,7 +253,7 @@ Orchestra Pluginには**自動承認フック**が含まれており、安全性
 - 危険な権限変更（`chmod 777`）
 - 重要なシステムファイルの変更（`/etc/passwd`、`/etc/sudoers`など）
 
-**場所:** [`orchestra-plugin/hooks/user-prompt-submit.sh`](orchestra-plugin/hooks/user-prompt-submit.sh)
+**場所:** [`orchestra/hooks/user-prompt-submit.sh`](orchestra/hooks/user-prompt-submit.sh)
 
 **無効化する場合:** フックファイルを削除または名前変更してください。
 
@@ -284,9 +284,9 @@ MIT License - 詳細は [LICENSE](LICENSE) を参照
 
 ## サポート
 
-- 📖 [完全なドキュメント](orchestra-plugin/)
-- 🐛 [問題を報告](https://github.com/tstomtimes/orchestra-plugin/issues)
-- 💬 [ディスカッション](https://github.com/tstomtimes/orchestra-plugin/discussions)
+- 📖 [完全なドキュメント](orchestra/)
+- 🐛 [問題を報告](https://github.com/tstomtimes/orchestra/issues)
+- 💬 [ディスカッション](https://github.com/tstomtimes/orchestra/discussions)
 
 ---
 

@@ -12,8 +12,8 @@ Hooks are automation scripts that run at specific points in your development wor
 
 1. Install the plugin:
    ```
-   /plugin marketplace add tstomtimes/orchestra-plugin
-   /plugin install orchestra-plugin
+   /plugin marketplace add tstomtimes/orchestra
+   /plugin install orchestra
    ```
 
 2. Restart Claude Code
@@ -303,7 +303,7 @@ echo "Exit code: $?"
 
 - [Claude Code Hooks Documentation](https://docs.claude.com/claude-code/hooks)
 - [Security Guide](SECURITY.md)
-- [GitHub Issues](https://github.com/tstomtimes/orchestra-plugin/issues)
+- [GitHub Issues](https://github.com/tstomtimes/orchestra/issues)
 
 ---
 

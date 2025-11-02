@@ -6,7 +6,7 @@
   },
   "plugins": [
     {
-      "name": "orchestra-plugin",
+      "name": "orchestra",
       "source": "./../",
       "version": "1.0.0",
       "description": "Turn Claude Code into a semi-autonomous development team with specialized AI agents, automated quality gates, and seamless integrations.",
@@ -15,8 +15,8 @@
         "email": "[email protected]"
       },
       "license": "MIT",
-      "homepage": "https://github.com/tstomtimes/orchestra-plugin",
-      "repository": "https://github.com/tstomtimes/orchestra-plugin.git",
+      "homepage": "https://github.com/tstomtimes/orchestra",
+      "repository": "https://github.com/tstomtimes/orchestra.git",
       "keywords": [
         "ai-agents",
         "orchestration",

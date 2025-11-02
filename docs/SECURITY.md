@@ -100,7 +100,7 @@ Before enabling hooks in production:
 ```bash
 # Test hooks in a safe directory
 cd /tmp/test-project
-cp -r /path/to/orchestra-plugin/.claude .
+cp -r /path/to/orchestra/.claude .
 # Try operations and verify hook behavior
 ```
 

@@ -54,20 +54,20 @@ if [ -f "$SETTINGS_FILE" ]; then
         echo -e "${YELLOW}⏭️  Skipped settings configuration${NC}\n"
     else
         echo -e "${YELLOW}📝 Please manually add Orchestra Plugin settings to your settings.json${NC}"
-        echo -e "${YELLOW}See: https://github.com/tstomtimes/orchestra-plugin#configuration${NC}\n"
+        echo -e "${YELLOW}See: https://github.com/tstomtimes/orchestra#configuration${NC}\n"
     fi
 else
     cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "enabledPlugins": {
-    "orchestra-plugin@orchestra-marketplace": true
+    "orchestra@orchestra-marketplace": true
   },
   "extraKnownMarketplaces": {
     "orchestra-marketplace": {
       "source": {
         "source": "github",
-        "repo": "tstomtimes/orchestra-plugin"
+        "repo": "tstomtimes/orchestra"
       }
     }
   },
@@ -111,10 +111,10 @@ cat << 'EOF'
 Please run the following commands in Claude Code:
 
 1. Add the Orchestra Plugin marketplace:
-   /plugin marketplace add tstomtimes/orchestra-plugin
+   /plugin marketplace add tstomtimes/orchestra
 
 2. Install the plugin:
-   /plugin install orchestra-plugin
+   /plugin install orchestra
 
 3. Restart Claude Code to activate all features
 
@@ -132,8 +132,8 @@ cat << 'EOF'
    • Automated quality gates and hooks
    • Multi-agent orchestration
 
-📖 Documentation: https://github.com/tstomtimes/orchestra-plugin
-🐛 Issues: https://github.com/tstomtimes/orchestra-plugin/issues
+📖 Documentation: https://github.com/tstomtimes/orchestra
+🐛 Issues: https://github.com/tstomtimes/orchestra/issues
 
 EOF
 echo -e "${NC}"

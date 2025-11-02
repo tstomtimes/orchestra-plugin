@@ -132,7 +132,7 @@ Integrates with Slack API for notifications and chat.
 Run the installation script:
 
 ```bash
-cd orchestra-plugin/mcp-servers
+cd orchestra/mcp-servers
 ./install.sh
 ```
 

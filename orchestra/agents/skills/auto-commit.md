@@ -13,7 +13,7 @@ Automatically create professional git commits after completing agent tasks with 
 
 Call the auto-commit script with:
 ```bash
-./orchestra-plugin/mcp-servers/auto-commit.sh <prefix> <reason> <action> [agent_name]
+./orchestra/mcp-servers/auto-commit.sh <prefix> <reason> <action> [agent_name]
 ```
 
 ### Parameters
@@ -43,7 +43,7 @@ Call the auto-commit script with:
 **Eden (QA Agent) - After running tests:**
 ```bash
 # English
-./orchestra-plugin/mcp-servers/auto-commit.sh \
+./orchestra/mcp-servers/auto-commit.sh \
   "test" \
   "to ensure code quality" \
   "Add comprehensive unit tests for API endpoints" \
@@ -51,7 +51,7 @@ Call the auto-commit script with:
 # Result: test: Add comprehensive unit tests for API endpoints (to ensure code quality)
 
 # Japanese
-./orchestra-plugin/mcp-servers/auto-commit.sh \
+./orchestra/mcp-servers/auto-commit.sh \
   "test" \
   "コード品質を確保するため" \
   "APIエンドポイント用の包括的な単体テストを追加" \
@@ -61,7 +61,7 @@ Call the auto-commit script with:
 
 **Iris (Security Agent) - After security scan:**
 ```bash
-./orchestra-plugin/mcp-servers/auto-commit.sh \
+./orchestra/mcp-servers/auto-commit.sh \
   "chore" \
   "to validate deployment security" \
   "Run TruffleHog and Grype security scans" \
@@ -71,7 +71,7 @@ Call the auto-commit script with:
 
 **Alex (Architect) - After code review:**
 ```bash
-./orchestra-plugin/mcp-servers/auto-commit.sh \
+./orchestra/mcp-servers/auto-commit.sh \
   "refactor" \
   "to improve code maintainability" \
   "Restructure component hierarchy" \
@@ -81,7 +81,7 @@ Call the auto-commit script with:
 
 **Mina (UX Agent) - After UI implementation:**
 ```bash
-./orchestra-plugin/mcp-servers/auto-commit.sh \
+./orchestra/mcp-servers/auto-commit.sh \
   "feat" \
   "to enhance user experience" \
   "Implement responsive navigation component" \
@@ -91,7 +91,7 @@ Call the auto-commit script with:
 
 **Theo (DevOps) - After deployment:**
 ```bash
-./orchestra-plugin/mcp-servers/auto-commit.sh \
+./orchestra/mcp-servers/auto-commit.sh \
   "chore" \
   "to track deployment state" \
   "Update production deployment configuration" \
@@ -116,21 +116,21 @@ COMMIT_LANGUAGE=en  # or 'ja' for Japanese
 ```
 prefix: <action> (<reason>)
 
-Co-Authored-By: <Agent> <noreply@orchestra-plugin>
+Co-Authored-By: <Agent> <noreply@orchestra>
 ```
 
 **English example:**
 ```
 feat: Add voice notification feature (to support agent announcements)
 
-Co-Authored-By: Eden <noreply@orchestra-plugin>
+Co-Authored-By: Eden <noreply@orchestra>
 ```
 
 **Japanese example:**
 ```
 feat: 音声通知機能を追加 (エージェントのアナウンスをサポートするため)
 
-Co-Authored-By: Eden <noreply@orchestra-plugin>
+Co-Authored-By: Eden <noreply@orchestra>
 ```
 
 ## Best Practices

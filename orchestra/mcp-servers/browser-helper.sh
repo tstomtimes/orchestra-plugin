@@ -30,7 +30,7 @@ api_call() {
 check_server() {
     if ! curl -s "$BROWSER_URL/health" > /dev/null 2>&1; then
         echo -e "${RED}❌ Browser MCP server is not running${NC}" >&2
-        echo "   Start it with: cd orchestra-plugin/mcp-servers && npm run browser" >&2
+        echo "   Start it with: cd orchestra/mcp-servers && npm run browser" >&2
         exit 1
     fi
 }
@@ -262,7 +262,7 @@ Examples:
 Environment Variables:
   BROWSER_MCP_URL              Browser MCP server URL (default: http://localhost:3030)
 
-See: orchestra-plugin/agents/skills/web-browse.md for full documentation
+See: orchestra/agents/skills/web-browse.md for full documentation
 EOF
         ;;
 

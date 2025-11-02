@@ -1,11 +1,11 @@
-# Contributing to Orchestra Plugin
+# Contributing to Orchestra
 
-Thank you for your interest in contributing to Orchestra Plugin! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to Orchestra! This document provides guidelines and instructions for contributing.
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/orchestra-plugin.git`
+2. Clone your fork: `git clone https://github.com/yourusername/orchestra.git`
 3. Create a new branch: `git checkout -b feature/your-feature-name`
 4. Make your changes
 5. Test your changes thoroughly
@@ -28,13 +28,13 @@ When creating or modifying agents:
 - Each agent should have a clear, specific role
 - Define expertise areas and responsibilities explicitly
 - Include collaboration patterns with other agents
-- Follow the existing agent structure in `orchestra-plugin/agents/`
+- Follow the existing agent structure in `orchestra/agents/`
 
 ### Skill Development
 
 For new skills:
-- Place core skills in `orchestra-plugin/skills/core/`
-- Place mode-specific skills in `orchestra-plugin/skills/modes/`
+- Place core skills in `orchestra/skills/core/`
+- Place mode-specific skills in `orchestra/skills/modes/`
 - Update `policies/skills-map.yaml` to define when skills are invoked
 - Ensure skills are stack-agnostic when possible
 

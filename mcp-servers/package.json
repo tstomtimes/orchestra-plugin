@@ -1,7 +1,7 @@
 {
-  "name": "orchestra-plugin-mcp-servers",
+  "name": "orchestra-mcp-servers",
   "version": "1.0.0",
-  "description": "MCP servers for Orchestra Plugin",
+  "description": "MCP servers for Orchestra",
   "main": "index.js",
   "scripts": {
     "browser": "ts-node browser-server.ts",

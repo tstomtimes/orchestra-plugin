@@ -87,7 +87,7 @@ echo ""
 # Step 3: Install MCP server dependencies
 echo -e "${YELLOW}[3/6] Installing MCP server dependencies...${NC}"
 
-cd "$PROJECT_ROOT/orchestra-plugin/mcp-servers"
+cd "$PROJECT_ROOT/orchestra/mcp-servers"
 
 # Install Node.js dependencies
 echo -e "${BLUE}Installing Node.js packages...${NC}"
@@ -123,8 +123,8 @@ echo -e "${YELLOW}[4/6] Setting up executable permissions...${NC}"
 cd "$PROJECT_ROOT"
 
 # Make all shell scripts executable
-chmod +x orchestra-plugin/mcp-servers/*.sh
-chmod +x orchestra-plugin/hooks/*.sh
+chmod +x orchestra/mcp-servers/*.sh
+chmod +x orchestra/hooks/*.sh
 echo -e "${GREEN}✓ All scripts are now executable${NC}"
 
 echo ""
@@ -141,13 +141,13 @@ mkdir -p "$PROJECT_ROOT/.claude/hooks"
 mkdir -p "$PROJECT_ROOT/.claude/commands"
 
 # Symlink auto-approve hook
-ln -sf "$PROJECT_ROOT/orchestra-plugin/hooks/user-prompt-submit.sh" "$PROJECT_ROOT/.claude/hooks/user-prompt-submit.sh"
+ln -sf "$PROJECT_ROOT/orchestra/hooks/user-prompt-submit.sh" "$PROJECT_ROOT/.claude/hooks/user-prompt-submit.sh"
 echo -e "${GREEN}✓ Auto-approve hook installed${NC}"
 echo -e "${BLUE}  (Enable autonomous operation - blocks dangerous commands only)${NC}"
 
 # Symlink slash commands
-ln -sf "$PROJECT_ROOT/orchestra-plugin/.claude/commands/browser.md" "$PROJECT_ROOT/.claude/commands/browser.md"
-ln -sf "$PROJECT_ROOT/orchestra-plugin/.claude/commands/screenshot.md" "$PROJECT_ROOT/.claude/commands/screenshot.md"
+ln -sf "$PROJECT_ROOT/orchestra/.claude/commands/browser.md" "$PROJECT_ROOT/.claude/commands/browser.md"
+ln -sf "$PROJECT_ROOT/orchestra/.claude/commands/screenshot.md" "$PROJECT_ROOT/.claude/commands/screenshot.md"
 echo -e "${GREEN}✓ Slash commands installed (/browser, /screenshot)${NC}"
 
 echo ""
@@ -158,7 +158,7 @@ echo -e "${YELLOW}[6/6] Testing installations...${NC}"
 # Test ElevenLabs server (if API key is set)
 if grep -q "ELEVENLABS_API_KEY=sk-" "$PROJECT_ROOT/.env" 2>/dev/null; then
     echo -e "${BLUE}Testing ElevenLabs server...${NC}"
-    cd "$PROJECT_ROOT/orchestra-plugin/mcp-servers"
+    cd "$PROJECT_ROOT/orchestra/mcp-servers"
     source venv/bin/activate
     timeout 5 python3 elevenlabs-server.py test 2>/dev/null && echo -e "${GREEN}✓ ElevenLabs server works${NC}" || echo -e "${YELLOW}⚠️  ElevenLabs server needs configuration${NC}"
 else
@@ -185,23 +185,23 @@ echo -e "   ${BLUE}vim .env${NC}"
 echo ""
 
 echo -e "${YELLOW}2. Start the Browser MCP server:${NC}"
-echo -e "   ${BLUE}cd orchestra-plugin/mcp-servers${NC}"
+echo -e "   ${BLUE}cd orchestra/mcp-servers${NC}"
 echo -e "   ${BLUE}npm run browser &${NC}"
 echo ""
 
 echo -e "${YELLOW}3. Test browser automation:${NC}"
-echo -e "   ${BLUE}./orchestra-plugin/mcp-servers/browser-helper.sh init${NC}"
-echo -e "   ${BLUE}./orchestra-plugin/mcp-servers/browser-helper.sh navigate https://example.com${NC}"
-echo -e "   ${BLUE}./orchestra-plugin/mcp-servers/browser-helper.sh screenshot example.png true${NC}"
-echo -e "   ${BLUE}./orchestra-plugin/mcp-servers/browser-helper.sh close${NC}"
+echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh init${NC}"
+echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh navigate https://example.com${NC}"
+echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh screenshot example.png true${NC}"
+echo -e "   ${BLUE}./orchestra/mcp-servers/browser-helper.sh close${NC}"
 echo ""
 
 echo -e "${YELLOW}4. Test voice notifications (if ELEVENLABS_API_KEY is set):${NC}"
-echo -e "   ${BLUE}./orchestra-plugin/mcp-servers/play-voice.sh alex task${NC}"
+echo -e "   ${BLUE}./orchestra/mcp-servers/play-voice.sh alex task${NC}"
 echo ""
 
 echo -e "${YELLOW}5. Test auto-commit:${NC}"
-echo -e "   ${BLUE}./orchestra-plugin/mcp-servers/auto-commit.sh feat \"to add new feature\" \"Add cool functionality\" \"Alex\"${NC}"
+echo -e "   ${BLUE}./orchestra/mcp-servers/auto-commit.sh feat \"to add new feature\" \"Add cool functionality\" \"Alex\"${NC}"
 echo ""
 
 echo -e "${GREEN}🎉 Happy orchestrating!${NC}\n"
@@ -210,7 +210,7 @@ echo -e "${GREEN}🎉 Happy orchestrating!${NC}\n"
 read -p "$(echo -e ${YELLOW}Would you like to start the Browser MCP server now? [y/N]: ${NC})" -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    cd "$PROJECT_ROOT/orchestra-plugin/mcp-servers"
+    cd "$PROJECT_ROOT/orchestra/mcp-servers"
     echo -e "${BLUE}Starting Browser MCP server...${NC}"
     npm run browser &
     sleep 3

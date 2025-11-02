@@ -21,7 +21,7 @@ Get your API key from: https://elevenlabs.io/
 ### 2. Test Voice Notification
 
 ```bash
-echo '{"command":"announce_task_complete","params":{"agent_name":"alex","task_description":"code review"}}' | python3 orchestra-plugin/mcp-servers/elevenlabs-server.py
+echo '{"command":"announce_task_complete","params":{"agent_name":"alex","task_description":"code review"}}' | python3 orchestra/mcp-servers/elevenlabs-server.py
 ```
 
 ## Agent Voices & Personalities
@@ -215,7 +215,7 @@ Voice notifications can be integrated into hooks for automated feedback:
 # In after_deploy.sh
 if [ "$VOICE_ENABLED" = "true" ]; then
   echo '{"command":"announce_task_complete","params":{"agent_name":"theo","task_description":"deployment"}}' | \
-    python3 orchestra-plugin/mcp-servers/elevenlabs-server.py
+    python3 orchestra/mcp-servers/elevenlabs-server.py
 fi
 ```
 

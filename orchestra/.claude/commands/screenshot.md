@@ -19,7 +19,7 @@ Navigate to a specified URL and take a full-page screenshot, saving it to the ar
 
 4. Execute the screenshot workflow:
    ```bash
-   cd orchestra-plugin/mcp-servers
+   cd orchestra/mcp-servers
 
    # Initialize browser
    ./browser-helper.sh init

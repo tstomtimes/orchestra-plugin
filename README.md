@@ -1,4 +1,4 @@
-# Orchestra Plugin for Claude Code
+# Orchestra for Claude Code
 
 Turn Claude Code into a **semi-autonomous development team** with specialized AI agents, automated quality gates, and seamless integrations.
 
@@ -25,14 +25,14 @@ English | [日本語](README.ja.md)
 Run this command in your project directory:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra-plugin/main/install-plugin.sh | bash
+curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra/main/install-plugin.sh | bash
 ```
 
 Then in Claude Code, run:
 
 ```
-/plugin marketplace add tstomtimes/orchestra-plugin
-/plugin install orchestra-plugin
+/plugin marketplace add tstomtimes/orchestra
+/plugin install orchestra
 ```
 
 Restart Claude Code and you're ready to go!
@@ -44,8 +44,8 @@ If you want to contribute to Orchestra Plugin or customize it:
 #### 1. Clone and Configure
 
 ```bash
-git clone https://github.com/tstomtimes/orchestra-plugin.git
-cd orchestra-plugin
+git clone https://github.com/tstomtimes/orchestra.git
+cd orchestra
 cp .env.example .env
 # Edit .env with your GitHub token (required) and optional service tokens
 ```
@@ -63,8 +63,8 @@ That's it! The setup script installs everything automatically.
 In Claude Code, run:
 
 ```
-/plugin marketplace add /path/to/orchestra-plugin
-/plugin install orchestra-plugin
+/plugin marketplace add /path/to/orchestra
+/plugin install orchestra
 ```
 
 Restart Claude Code to activate all features.
@@ -197,7 +197,7 @@ See [.env.example](.env.example) for detailed configuration options.
 ## Project Structure
 
 ```
-orchestra-plugin/
+orchestra/
 ├── agents/           # AI agents (Alex, Eden, Iris, Mina, Theo, etc.)
 ├── skills/           # Reusable capabilities
 ├── hooks/            # Quality gate scripts and auto-approve hook
@@ -210,7 +210,7 @@ orchestra-plugin/
 
 ### Custom Slash Commands
 
-Available commands in [orchestra-plugin/.claude/commands/](orchestra-plugin/.claude/commands/):
+Available commands in [orchestra/.claude/commands/](orchestra/.claude/commands/):
 - `/browser` - Start/restart browser automation server
 - `/screenshot` - Capture screenshots from browser
 
@@ -228,7 +228,7 @@ No manual setup needed. Just add tokens to `.env`.
 
 ### Hook Customization
 
-Hooks are in [hooks/](orchestra-plugin/hooks/) and fully customizable. Each hook:
+Hooks are in [hooks/](orchestra/hooks/) and fully customizable. Each hook:
 - Auto-detects your project type
 - Skips gracefully if tools aren't available
 - Provides clear error messages
@@ -253,7 +253,7 @@ Orchestra Plugin includes an **auto-approve hook** that enables autonomous, long
 - Dangerous permission changes (`chmod 777`)
 - Modifications to critical system files (`/etc/passwd`, `/etc/sudoers`, etc.)
 
-**Location:** [`orchestra-plugin/hooks/user-prompt-submit.sh`](orchestra-plugin/hooks/user-prompt-submit.sh)
+**Location:** [`orchestra/hooks/user-prompt-submit.sh`](orchestra/hooks/user-prompt-submit.sh)
 
 **To disable:** Simply remove or rename the hook file.
 
@@ -284,9 +284,9 @@ MIT License - see [LICENSE](LICENSE)
 
 ## Support
 
-- 📖 [Full Documentation](orchestra-plugin/)
-- 🐛 [Report Issues](https://github.com/tstomtimes/orchestra-plugin/issues)
-- 💬 [Discussions](https://github.com/tstomtimes/orchestra-plugin/discussions)
+- 📖 [Full Documentation](orchestra/)
+- 🐛 [Report Issues](https://github.com/tstomtimes/orchestra/issues)
+- 💬 [Discussions](https://github.com/tstomtimes/orchestra/discussions)
 
 ---
 
