@@ -51,3 +51,13 @@ coverage/
 .cache/
 .eslintcache
 .stylelintcache
+
+# Artifacts (browser screenshots, test outputs, etc.)
+artifacts/
+mcp-servers/artifacts/
+
+# Test and debug files
+*test*.py
+*debug*.py
+test-*.py
+debug-*.py
