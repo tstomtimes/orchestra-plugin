@@ -4,6 +4,8 @@ Claude Codeを**半自律的な開発チーム**に変えるプラグイン。�
 
 [English](README.md) | 日本語
 
+> 🔒 **セキュリティ**: Orchestra Pluginは安全ガード機能を備えた自動hooksを使用します。危険な操作は自動的にブロックされます。詳細は[docs/SECURITY.md](docs/SECURITY.md)をご覧ください。
+
 ## なぜOrchestra？
 
 **普段通りClaude Codeを使うだけ。**新しいコマンドを覚える必要はありません。Orchestra Pluginはバックグラウンドで静かに動作します：

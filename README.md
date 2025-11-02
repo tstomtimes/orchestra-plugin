@@ -4,6 +4,8 @@ Turn Claude Code into a **semi-autonomous development team** with specialized AI
 
 English | [日本語](README.ja.md)
 
+> 🔒 **Security**: Orchestra Plugin uses automated hooks with built-in safety guards. Dangerous operations are automatically blocked. See [docs/SECURITY.md](docs/SECURITY.md) for details.
+
 ## Why Orchestra?
 
 **Just use Claude Code as you normally would.** No new commands to learn, no complex workflows. Orchestra Plugin works quietly in the background:
