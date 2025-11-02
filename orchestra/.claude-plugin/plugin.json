@@ -1,7 +1,0 @@
-{
-  "name": "orchestra",
-  "version": "1.0.0",
-  "description": "A multi-agent orchestration layer for Claude Code. Coordinates specialized subagents (UI, API, Data, Integration, QA, etc.) using declarative skill and policy mappings.",
-  "author": "Tsutomu Morishita",
-  "license": "MIT"
-}
