@@ -41,6 +41,8 @@ Configure the following tokens based on the services you use:
 - `SANITY_TOKEN` - For Sanity CMS integration (optional)
 - `SUPABASE_SERVICE_ROLE` - For Supabase database access (optional)
 - `SLACK_BOT_TOKEN` - For Slack notifications (optional)
+- `ELEVENLABS_API_KEY` - For agent voice notifications (optional)
+- `BROWSER_ALLOWED_DOMAINS` - Allowed domains for browser automation (optional)
 
 ## Project Structure
 
@@ -108,11 +110,12 @@ This plugin includes ready-to-use MCP servers for seamless integration with popu
 - **Shopify MCP Server** - Theme development, asset management, validation
 - **Vercel MCP Server** - Deployment management, monitoring, logs
 - **Slack MCP Server** - Notifications, deployment alerts, team communication
+- **Browser MCP Server** - Automated browser testing, screenshots, web scraping (NEW)
 
 ### Quick Start
 
 ```bash
-# Install MCP servers
+# Install Python MCP servers
 cd orchestra-plugin/mcp-servers
 ./install.sh
 
@@ -121,6 +124,17 @@ echo '{"command":"list_prs","params":{"owner":"myorg","repo":"myrepo"}}' | pytho
 
 # Test Shopify integration
 echo '{"command":"list_themes","params":{}}' | python3 shopify-server.py
+
+# Install and start Browser MCP Server
+npm install
+npm run install-browser
+npm run browser &
+
+# Test browser automation
+./browser-helper.sh init
+./browser-helper.sh navigate https://example.com
+./browser-helper.sh screenshot homepage.png true
+./browser-helper.sh close
 ```
 
 For detailed usage instructions, see [mcp-servers/README.md](orchestra-plugin/mcp-servers/README.md).
