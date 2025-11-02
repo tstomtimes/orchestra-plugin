@@ -425,11 +425,6 @@ app.post('/auth/save', async (req: Request, res: Response) => {
 
     const envPath = path.join(process.cwd(), '../../.env');
 
-    // Security warning: Log warning about plain text storage
-    console.warn('⚠️  WARNING: Saving password in plain text to .env file');
-    console.warn(`⚠️  Variable: ${envVarName}`);
-    console.warn('⚠️  Ensure .env is in .gitignore and has restrictive permissions (chmod 600)');
-
     // Read existing .env file
     let envContent = '';
     try {
@@ -445,33 +440,21 @@ app.post('/auth/save', async (req: Request, res: Response) => {
       // Update existing variable
       envContent = envContent.replace(varRegex, `${envVarName}=${password}`);
     } else {
-      // Add new variable with security warning comment
+      // Add new variable
       if (envContent && !envContent.endsWith('\n')) {
         envContent += '\n';
       }
-      envContent += `\n# Auto-saved password (stored in plain text - keep secure!)\n${envVarName}=${password}\n`;
+      envContent += `\n# Auto-saved password\n${envVarName}=${password}\n`;
     }
 
     // Write back to .env
     await fs.writeFile(envPath, envContent, 'utf-8');
 
-    // Set restrictive file permissions (owner read/write only)
-    try {
-      await fs.chmod(envPath, 0o600);
-      console.log('✅ Set .env file permissions to 600 (owner read/write only)');
-    } catch (error) {
-      console.warn('⚠️  Could not set restrictive permissions on .env file');
-    }
-
     // Update current process env
     process.env[envVarName] = password;
 
     await logOperation('auth_save', { envVarName });
-    res.json({
-      ok: true,
-      message: `Password saved to .env as ${envVarName}`,
-      warning: 'Password is stored in plain text. Ensure .env is in .gitignore and has restrictive permissions.'
-    });
+    res.json({ ok: true, message: `Password saved to .env as ${envVarName}` });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -578,37 +561,10 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Expression is required' });
     }
 
-    // Security: Enhanced blocking of dangerous operations
-    // Check for dangerous keywords (case-insensitive, with various evasion techniques)
-    const BLOCKED_KEYWORDS = [
-      'delete', 'drop', 'remove', 'cookie', 'localStorage', 'sessionStorage',
-      'eval', 'Function', 'constructor', '__proto__', 'prototype'
-    ];
-
-    const normalized = expression.toLowerCase().replace(/\s+/g, '');
-
-    // Check for blocked keywords (simple obfuscation prevention)
-    for (const keyword of BLOCKED_KEYWORDS) {
-      if (normalized.includes(keyword.toLowerCase())) {
-        return res.status(403).json({
-          error: 'Expression contains blocked keywords',
-          blocked: keyword
-        });
-      }
-    }
-
-    // Check for unicode escape sequences that might hide dangerous patterns
-    if (/\\u[0-9a-fA-F]{4}/.test(expression) || /\\x[0-9a-fA-F]{2}/.test(expression)) {
-      return res.status(403).json({
-        error: 'Unicode/hex escape sequences are not allowed'
-      });
-    }
-
-    // Check for string concatenation attempts to bypass filters
-    if (/['"`]\s*\+\s*['"`]/.test(expression)) {
-      return res.status(403).json({
-        error: 'String concatenation patterns detected and blocked'
-      });
+    // Security: Block dangerous operations
+    const BLOCKED_KEYWORDS = ['delete', 'drop', 'remove', 'cookie', 'localStorage'];
+    if (BLOCKED_KEYWORDS.some(keyword => expression.toLowerCase().includes(keyword))) {
+      return res.status(403).json({ error: 'Expression contains blocked keywords' });
     }
 
     if (!page) {
@@ -657,12 +613,11 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 
-const PORT = parseInt(process.env.BROWSER_MCP_PORT || '9222', 10);
+const PORT = process.env.BROWSER_MCP_PORT || 9222;
 
-app.listen(PORT, 'localhost', () => {
+app.listen(PORT, () => {
   const headlessMode = process.env.BROWSER_HEADLESS !== 'false';
-  console.log(`🌐 Browser MCP Server running on http://localhost:${PORT}`);
-  console.log(`🔒 Listening on localhost only (not exposed to network)`);
+  console.log(`🌐 Browser MCP Server running on port ${PORT}`);
   console.log(`📁 Artifacts directory: ${ARTIFACTS_DIR}`);
   console.log(`🔓 All domains allowed (development mode)`);
   console.log(`👁️  Browser mode: ${headlessMode ? 'headless (background)' : 'visible (GUI)'}`);

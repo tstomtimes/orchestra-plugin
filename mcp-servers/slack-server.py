@@ -47,17 +47,7 @@ class SlackMCPServer:
 
             return result
         except requests.exceptions.RequestException as e:
-            # Log detailed error for debugging (server-side only)
-            import logging
-            logging.error(f"Slack API request failed: {method} {endpoint} - {str(e)}")
-
-            # Return generic error to client (avoid exposing internal details)
-            status_code = getattr(e.response, "status_code", None)
-            return {
-                "error": "Slack API request failed",
-                "status_code": status_code,
-                "details": "See server logs for more information"
-            }
+            return {"error": str(e), "status_code": getattr(e.response, "status_code", None)}
 
     def send_message(self, channel: str, text: str, blocks: Optional[List[Dict]] = None, thread_ts: Optional[str] = None) -> Dict:
         """Send a message to a channel"""

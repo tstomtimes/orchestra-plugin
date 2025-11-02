@@ -42,17 +42,7 @@ class GitHubMCPServer:
             response.raise_for_status()
             return response.json() if response.text else {}
         except requests.exceptions.RequestException as e:
-            # Log detailed error for debugging (server-side only)
-            import logging
-            logging.error(f"GitHub API request failed: {method} {endpoint} - {str(e)}")
-
-            # Return generic error to client (avoid exposing internal details)
-            status_code = getattr(e.response, "status_code", None)
-            return {
-                "error": "GitHub API request failed",
-                "status_code": status_code,
-                "details": "See server logs for more information"
-            }
+            return {"error": str(e), "status_code": getattr(e.response, "status_code", None)}
 
     def list_pull_requests(self, owner: str, repo: str, state: str = "open") -> List[Dict]:
         """List pull requests for a repository"""

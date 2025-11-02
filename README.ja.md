@@ -18,7 +18,28 @@ Claude Codeを**半自律的な開発チーム**に変えるプラグイン。�
 
 ## クイックスタート
 
-### 1. クローンと設定
+### 方法1: 任意のプロジェクトにインストール（推奨）
+
+プロジェクトディレクトリで以下のコマンドを実行：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra-plugin/main/install-plugin.sh | bash
+```
+
+次に、Claude Codeで以下を実行：
+
+```
+/plugin marketplace add tstomtimes/orchestra-plugin
+/plugin install orchestra-plugin
+```
+
+Claude Codeを再起動すれば準備完了です！
+
+### 方法2: プラグイン開発用インストール
+
+Orchestra Pluginに貢献したい、またはカスタマイズしたい場合：
+
+#### 1. クローンと設定
 
 ```bash
 git clone https://github.com/tstomtimes/orchestra-plugin.git
@@ -27,7 +48,7 @@ cp .env.example .env
 # .envファイルにGitHubトークン（必須）とオプションのサービストークンを設定
 ```
 
-### 2. インストール
+#### 2. インストール
 
 ```bash
 ./setup.sh
@@ -35,43 +56,18 @@ cp .env.example .env
 
 これだけです！セットアップスクリプトがすべて自動でインストールします。
 
-### 3. Claude Codeに追加
+#### 3. Claude Codeに追加
 
-すべてのエージェント、フック、連携機能を有効にするため、Claude Codeにこのプラグインを追加します：
+Claude Codeで以下を実行：
 
-**方法A: Claude Code UIを使用（推奨）**
-1. Claude Codeを開く
-2. 設定/環境設定を開く（Macは⌘+,、Windows/LinuxはCtrl+,）
-3. 「Plugins」セクションに移動
-4. 「Add Plugin」ボタンをクリック
-5. `orchestra-plugin` ディレクトリを選択（クローンした場所のフルパス）
-6. 「Save」または「Apply」をクリック
-7. 必要に応じてClaude Codeを再起動
-
-**方法B: 設定ファイルで追加**
-1. Claude Code設定ファイルの場所を確認：
-   - macOS/Linux: `~/.claude/config.json`
-   - Windows: `%APPDATA%\Claude\config.json`
-2. 設定ファイルにプラグインパスを追加：
-```json
-{
-  "plugins": [
-    {
-      "path": "/absolute/path/to/orchestra-plugin"
-    }
-  ]
-}
 ```
-3. `/absolute/path/to/orchestra-plugin` を実際のフルパスに置き換える
-4. ファイルを保存してClaude Codeを再起動
+/plugin marketplace add /path/to/orchestra-plugin
+/plugin install orchestra-plugin
+```
 
-**インストール確認：**
-- Claude Codeを開いて会話を開始
-- 12人のエージェント（Alex、Riley、Skyeなど）が自動的に利用可能になっているはず
-- `/browser` や `/screenshot` コマンドを試してスラッシュコマンドをテスト
-- Git操作時にフックが自動実行されることを確認
+Claude Codeを再起動してすべての機能を有効化します。
 
-### 4. コーディング開始
+### コーディング開始
 
 これまで通りClaude Codeを使用してください。Orchestra Pluginがすべてを自動的に強化します：
 
@@ -123,6 +119,59 @@ cp .env.example .env
 - 🧑‍✈️ **Blake** 🚀 _"準備完了、リリースしましょう"_ - リリースの指揮者。安全で確実なデプロイを保証する
 
 全員があなたのリクエストに応じて自動的に協力し、最高の開発体験を提供します。
+
+### 並列エージェント実行
+
+**Orchestra Pluginは可能な限りエージェントを並列実行**し、品質を保ちながら完了時間を劇的に短縮します。
+
+**仕組み:**
+- Alex（指揮者）がタスクの依存関係を分析
+- 独立したタスクはバックグラウンドで同時実行
+- 依存関係のあるタスクは正確性を保つため順次実行
+- すべての結果を調整して一緒にレビュー
+
+**並列ワークフローの例:**
+
+**実装フェーズ**（並列実行）:
+```
+ユーザー: "ユーザー認証システムを追加して"
+
+Alexが調整:
+├─ Skye（実装）      ──┐
+├─ Finn（テスト作成）──┤─→ 全て完了 → 一緒にレビュー
+└─ Eden（ドキュメント）──┘
+```
+
+**レビューフェーズ**（並列実行）:
+```
+実装完了後:
+
+├─ Iris（セキュリティスキャン）──┐
+├─ Nova（UXレビュー）          ──┤─→ 問題なし → マージへ進む
+└─ Leo（スキーマ検証）         ──┘
+```
+
+**リリース前フェーズ**（並列実行）:
+```
+デプロイ前:
+
+├─ Blake（変更履歴）        ──┐
+├─ Eden（リリースノート）   ──┤─→ リリース準備完了
+└─ Theo（モニタリング設定） ──┘
+```
+
+**メリット:**
+- ⚡ **3〜5倍高速** - マルチドメインタスクの完了時間を大幅短縮
+- 🎯 **自動最適化** - 手動での調整不要
+- 🔒 **安全な並列化** - 依存関係は常に尊重される
+- 📊 **完全な可視性** - 次に進む前にすべてのエージェント出力を確認
+
+**一般的な並列パターン:**
+- コード + テスト + ドキュメント（同じ機能への独立した作業）
+- セキュリティ + UX + パフォーマンス（独立したレビュー）
+- フロントエンド + バックエンド + データベース（独立した実装レイヤー）
+
+オーケストレーションは自動的に行われます。必要なことを説明するだけで、Alexが最も効率的な実行を調整します。
 
 ## 環境変数
 

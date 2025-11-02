@@ -18,7 +18,28 @@ English | [日本語](README.ja.md)
 
 ## Quick Start
 
-### 1. Clone and Configure
+### Option 1: Install to Any Project (Recommended)
+
+Run this command in your project directory:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/tstomtimes/orchestra-plugin/main/install-plugin.sh | bash
+```
+
+Then in Claude Code, run:
+
+```
+/plugin marketplace add tstomtimes/orchestra-plugin
+/plugin install orchestra-plugin
+```
+
+Restart Claude Code and you're ready to go!
+
+### Option 2: Install for Plugin Development
+
+If you want to contribute to Orchestra Plugin or customize it:
+
+#### 1. Clone and Configure
 
 ```bash
 git clone https://github.com/tstomtimes/orchestra-plugin.git
@@ -27,7 +48,7 @@ cp .env.example .env
 # Edit .env with your GitHub token (required) and optional service tokens
 ```
 
-### 2. Install
+#### 2. Install
 
 ```bash
 ./setup.sh
@@ -35,43 +56,18 @@ cp .env.example .env
 
 That's it! The setup script installs everything automatically.
 
-### 3. Add to Claude Code
+#### 3. Add to Claude Code
 
-Add this plugin to Claude Code to activate all agents, hooks, and integrations:
+In Claude Code, run:
 
-**Option A: Using Claude Code UI (Recommended)**
-1. Open Claude Code
-2. Open Settings/Preferences (⌘+, on Mac or Ctrl+, on Windows/Linux)
-3. Navigate to the "Plugins" section
-4. Click "Add Plugin" button
-5. Browse to and select the `orchestra-plugin` directory (the full path where you cloned it)
-6. Click "Save" or "Apply"
-7. Restart Claude Code if prompted
-
-**Option B: Manual Configuration**
-1. Locate your Claude Code configuration file:
-   - macOS/Linux: `~/.claude/config.json`
-   - Windows: `%APPDATA%\Claude\config.json`
-2. Add the plugin path to your configuration:
-```json
-{
-  "plugins": [
-    {
-      "path": "/absolute/path/to/orchestra-plugin"
-    }
-  ]
-}
 ```
-3. Replace `/absolute/path/to/orchestra-plugin` with the actual full path
-4. Save the file and restart Claude Code
+/plugin marketplace add /path/to/orchestra-plugin
+/plugin install orchestra-plugin
+```
 
-**Verify Installation:**
-- Open Claude Code and start a conversation
-- All 12 agents (Alex, Riley, Skye, etc.) should be available automatically
-- Try `/browser` or `/screenshot` commands to test slash commands
-- Check that hooks run automatically during git operations
+Restart Claude Code to activate all features.
 
-### 4. Start Coding
+### Start Coding
 
 Use Claude Code exactly as before. Orchestra Plugin enhances everything automatically:
 
@@ -123,6 +119,59 @@ All hooks gracefully skip if tools aren't installed. No errors, no friction.
 - 🧑‍✈️ **Blake** 🚀 _"Everything's lined up. Let's ship!"_ - Release conductor. Ensures every deployment is safe and confident
 
 All agents work together automatically to give you the best development experience.
+
+### Parallel Agent Execution
+
+**Orchestra Plugin intelligently runs agents in parallel when possible**, dramatically reducing completion time while maintaining quality.
+
+**How it works:**
+- Alex (the conductor) analyzes task dependencies
+- Independent tasks run concurrently in the background
+- Dependent tasks execute sequentially to maintain correctness
+- All results are coordinated and reviewed together
+
+**Example parallel workflows:**
+
+**Implementation Phase** (running in parallel):
+```
+User: "Add user authentication system"
+
+Alex coordinates:
+├─ Skye (Implementation) ──┐
+├─ Finn (Test writing)    ──┤─→ All complete → Review together
+└─ Eden (Documentation)   ──┘
+```
+
+**Review Phase** (running in parallel):
+```
+After implementation:
+
+├─ Iris (Security scan)   ──┐
+├─ Nova (UX review)       ──┤─→ All clear → Proceed to merge
+└─ Leo (Schema validation)──┘
+```
+
+**Pre-Release Phase** (running in parallel):
+```
+Before deployment:
+
+├─ Blake (Changelog)          ──┐
+├─ Eden (Release notes)       ──┤─→ Ready to ship
+└─ Theo (Monitoring setup)    ──┘
+```
+
+**Benefits:**
+- ⚡ **3-5x faster** completion for multi-domain tasks
+- 🎯 **Automatic optimization** - no manual coordination needed
+- 🔒 **Safe parallelization** - dependencies are always respected
+- 📊 **Full visibility** - see all agent outputs before proceeding
+
+**Common parallel patterns:**
+- Code + Tests + Docs (independent work on same feature)
+- Security + UX + Performance (independent reviews)
+- Frontend + Backend + Database (independent implementation layers)
+
+The orchestration happens automatically. Just describe what you need, and Alex coordinates the most efficient execution.
 
 ## Environment Variables
 
