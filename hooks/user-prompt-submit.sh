@@ -6,9 +6,12 @@
 
 set -euo pipefail
 
-# Get the tool use details from environment
-TOOL_NAME="${TOOL_NAME:-}"
-TOOL_PARAMS="${TOOL_PARAMS:-}"
+# Read JSON input from stdin
+INPUT_JSON=$(cat)
+
+# Extract tool details from JSON
+TOOL_NAME=$(echo "$INPUT_JSON" | jq -r '.tool_name // empty' 2>/dev/null || echo "")
+TOOL_PARAMS=$(echo "$INPUT_JSON" | jq -c '.tool_input // {}' 2>/dev/null || echo "{}")
 
 # List of dangerous operations to block
 DANGEROUS_PATTERNS=(

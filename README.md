@@ -84,13 +84,36 @@ You: "Add a user profile page with avatar upload"
 
 ## Features That Work Automatically
 
-### Quality Gates (No Action Needed)
+### Automated Hook System
 
-- **before_task.sh** - Validates task clarity
-- **before_pr.sh** - Linting, type checking, tests, secret scanning
-- **before_merge.sh** - E2E tests, performance checks
-- **before_deploy.sh** - Environment validation, migration checks
-- **after_deploy.sh** - Smoke tests, notifications
+Orchestra Plugin includes a comprehensive hook system that runs automatically:
+
+**Active Hooks (Configured in `hooks/hooks.json`):**
+
+1. **UserPromptSubmit Hook** - Runs when you submit any prompt
+   - `agent-routing-reminder.sh` - Analyzes your request and suggests appropriate specialist agents
+     - Detects keywords like "authentication", "database", "UI", "faster", etc.
+     - Automatically triggers routing reminders to ensure the right agents are invoked
+   - `before_task.sh` - Task clarity reminder
+     - Suggests best practices for well-defined tasks
+     - Checks for ambiguous language and recommends Riley agent when needed
+
+2. **PreToolUse Hook** - Runs before any tool executes
+   - `user-prompt-submit.sh` - Safety guard that blocks dangerous operations
+     - Prevents destructive commands (`rm -rf`, system file modifications, etc.)
+     - Ensures autonomous operation stays safe
+   - `workflow-dispatcher.sh` - Routes workflow commands to quality gates
+     - Detects `gh pr create` → runs `before_pr.sh` (lint, type check, tests, security scan)
+     - Detects `git merge` → runs `before_merge.sh` (E2E tests, Lighthouse checks)
+     - Detects deploy commands → runs `before_deploy.sh` (env validation, migration checks)
+
+3. **PostToolUse Hook** - Runs after tool execution completes
+   - `workflow-post-dispatcher.sh` - Post-workflow validation
+     - Detects deploy commands → runs `after_deploy.sh` (smoke tests, health checks)
+
+4. **SessionStart Hook** - Runs when Claude Code starts
+   - Displays welcome message confirming Orchestra Plugin is loaded
+   - Initializes agent coordination system
 
 All hooks gracefully skip if tools aren't installed. No errors, no friction.
 

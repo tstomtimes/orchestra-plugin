@@ -1,0 +1,67 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${pluginDir}/hooks/agent-routing-reminder.sh",
+            "description": "Agent Auto-Routing: Analyzes prompts and suggests appropriate specialist agents"
+          },
+          {
+            "type": "command",
+            "command": "bash ${pluginDir}/hooks/before_task.sh",
+            "description": "Task Clarity Reminder: Suggests best practices for well-defined tasks"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${pluginDir}/hooks/user-prompt-submit.sh",
+            "description": "Safety Guard: Blocks dangerous operations (rm -rf, system files, etc.)"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${pluginDir}/hooks/workflow-dispatcher.sh",
+            "description": "Workflow Quality Gates: Routes PR/merge/deploy commands to appropriate validation hooks"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${pluginDir}/hooks/workflow-post-dispatcher.sh",
+            "description": "Post-Workflow Validation: Runs smoke tests and validation after deployments"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🎭 Orchestra Plugin loaded - Specialized agents ready for coordination'",
+            "description": "Welcome message for Orchestra Plugin"
+          }
+        ]
+      }
+    ]
+  }
+}
