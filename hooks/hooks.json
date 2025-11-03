@@ -49,6 +49,16 @@
             "description": "Post-Workflow Validation: Runs smoke tests and validation after deployments"
           }
         ]
+      },
+      {
+        "matcher": "TodoWrite",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/post_code_write.sh",
+            "description": "Progress Tracker Integration: Updates progress tracking and displays progress in chat"
+          }
+        ]
       }
     ],
     "SessionStart": [
