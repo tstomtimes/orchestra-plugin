@@ -14,6 +14,7 @@ English | [日本語](README.ja.md)
 - 🛡️ **Automated quality gates** - Pre-merge checks, security scans, test validation run automatically
 - 🔌 **Seamless integrations** - GitHub, Vercel, Shopify, Slack - all connected and ready
 - 🌐 **Browser automation** - Built-in Playwright integration for web testing and automation
+- 🧠 **Memory Bank integration** - Persistent project knowledge that survives session restarts
 - 🎯 **Evidence-based** - Changelogs, test plans, and documentation generated automatically
 
 **It just works.** Install once, code naturally.
@@ -44,6 +45,7 @@ This installs:
 - Playwright Chromium browser for automation
 - Python virtual environment and packages (elevenlabs, requests)
 - All MCP servers (Browser, GitHub, Vercel, Shopify, Slack, etc.)
+- Memory Bank initialization (persistent project knowledge)
 - Hooks and quality gates
 
 Alternatively, you can run the setup from within Claude Code:
@@ -141,6 +143,37 @@ You: "Add a user profile page with avatar upload"
 ```
 
 ## Features That Work Automatically
+
+### Memory Bank Integration
+
+**Orchestra automatically initializes persistent project knowledge** that survives Claude Code session restarts.
+
+**What is Memory Bank?**
+
+Memory Bank is a persistent knowledge storage system that maintains project context across sessions. Instead of re-explaining your project every time Claude Code restarts, Memory Bank preserves:
+
+- **Project overview and current state** - High-level context about your project
+- **Technology stack and dependencies** - What technologies you're using and why
+- **Important decisions and rationale** - Key technical decisions with context
+- **Progress tracking and milestones** - What's been completed and what's next
+- **Next steps and action items** - Immediate priorities and roadmap
+
+**How it works:**
+
+1. **Automatic Setup**: Running `./setup.sh` automatically initializes Memory Bank with 5 structured template files in `~/memory-bank/orchestra/`
+2. **Session Persistence**: Project knowledge is preserved between Claude Code sessions
+3. **Agent Access**: All Orchestra agents read and update Memory Bank files for consistent context
+4. **Document Sync**: Changes in `.orchestra/specs/` automatically sync to Memory Bank
+5. **Milestone Tracking**: Progress is automatically recorded after deployments and major changes
+
+**Benefits:**
+
+- **No more context re-explanation** - Claude remembers your project across sessions
+- **Consistent agent knowledge** - All agents share the same project understanding
+- **Automatic documentation** - Project knowledge is captured as you work
+- **Progress visibility** - Track milestones and progress over time
+
+**Learn more**: See [MEMORY_BANK_GUIDE.md](MEMORY_BANK_GUIDE.md) for complete documentation on using Memory Bank.
 
 ### Automated Hook System
 
@@ -299,12 +332,23 @@ See [.env.example](.env.example) for detailed configuration options.
 
 ```
 orchestra/
-├── agents/           # AI agents (Alex, Eden, Iris, Mina, Theo, etc.)
-├── skills/           # Reusable capabilities
-├── hooks/            # Quality gate scripts and auto-approve hook
-├── mcp-servers/      # Service integrations (GitHub, Vercel, Browser, etc.)
+├── agents/              # AI agents (Alex, Eden, Iris, Mina, Theo, etc.)
+├── skills/              # Reusable capabilities
+├── hooks/               # Quality gate scripts and auto-approve hook
+├── mcp-servers/         # Service integrations (GitHub, Vercel, Browser, etc.)
+├── .orchestra/          # Document-Driven Development framework
+│   ├── specs/           # Requirements, architecture, data models
+│   ├── scripts/         # Automation scripts (Memory Bank, sync, tests)
+│   └── config.json      # Workflow configuration
 └── .claude/
-    └── commands/     # Slash commands (/browser, /screenshot)
+    └── commands/        # Slash commands (/browser, /screenshot)
+
+~/memory-bank/orchestra/ # Persistent project knowledge (auto-created)
+├── project-overview.md  # Project overview and current state
+├── tech-stack.md        # Technology stack and dependencies
+├── decisions.md         # Important decisions log
+├── progress.md          # Detailed progress tracking
+└── next-steps.md        # Immediate action items
 ```
 
 ## Advanced Usage
@@ -382,6 +426,12 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## License
 
 MIT License - see [LICENSE](LICENSE)
+
+## Additional Documentation
+
+- 📘 [Memory Bank Integration Guide](MEMORY_BANK_GUIDE.md) - Complete guide to persistent project knowledge
+- 📗 [Orchestra Setup Guide](ORCHESTRA_SETUP.md) - Detailed setup instructions
+- 📙 [Document-Driven Development](.orchestra/README.md) - Workflow documentation
 
 ## Support
 

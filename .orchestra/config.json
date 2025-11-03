@@ -1,0 +1,95 @@
+{
+  "version": "1.0.0",
+  "project": "Orchestra Plugin",
+  "description": "Document-Driven and Test-Driven Development Workflow Configuration",
+  "workflow": {
+    "enabled": true,
+    "mode": "lenient",
+    "enforceTestFirst": false,
+    "autoLint": true,
+    "autoFixLint": true,
+    "syncThreshold": 70,
+    "validateOnCommit": true
+  },
+  "phases": {
+    "requirements": {
+      "agents": ["Riley", "Kai"],
+      "requiredDocs": ["requirements/*.md", "architecture/ADR-*.md"],
+      "enabled": true
+    },
+    "testing": {
+      "agents": ["Finn"],
+      "requiredCoverage": 80,
+      "testFirst": true,
+      "enabled": true
+    },
+    "implementation": {
+      "agents": ["Skye", "Mina", "Leo"],
+      "autoLint": ["eslint", "prettier"],
+      "requireAllTestsPass": true,
+      "enabled": true
+    },
+    "validation": {
+      "agents": ["Iris", "Nova", "Eden"],
+      "syncValidator": true,
+      "securityScan": true,
+      "enabled": true
+    }
+  },
+  "integrations": {
+    "memoryBank": {
+      "enabled": true,
+      "project": "orchestra",
+      "autoSync": true,
+      "syncOnCommit": true,
+      "syncOnDeploy": true,
+      "recordMilestones": true,
+      "syncPatterns": [
+        ".orchestra/specs/requirements/*.md",
+        ".orchestra/specs/architecture/ADR-*.md",
+        ".orchestra/specs/data-models/*.md"
+      ],
+      "excludePatterns": [
+        "**/*TEMPLATE*.md"
+      ]
+    },
+    "linters": {
+      "typescript": "eslint",
+      "javascript": "eslint",
+      "python": "pylint"
+    },
+    "formatters": {
+      "typescript": "prettier",
+      "javascript": "prettier",
+      "python": "black"
+    }
+  },
+  "documentationRequirements": {
+    "requirements": {
+      "pattern": ".orchestra/specs/requirements/*.md",
+      "required": true,
+      "description": "Feature requirements and acceptance criteria"
+    },
+    "architecture": {
+      "pattern": ".orchestra/specs/architecture/ADR-*.md",
+      "required": true,
+      "description": "Architecture Decision Records"
+    },
+    "dataModels": {
+      "pattern": ".orchestra/specs/data-models/*.md",
+      "required": false,
+      "description": "Data model and schema documentation"
+    },
+    "businessLogic": {
+      "pattern": ".orchestra/specs/business-logic/*.md",
+      "required": false,
+      "description": "Business logic documentation"
+    }
+  },
+  "quality": {
+    "minSyncScore": 70,
+    "minTestCoverage": 80,
+    "minLintPass": true,
+    "blockCommitOnFailure": false
+  }
+}

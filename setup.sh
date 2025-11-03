@@ -131,19 +131,43 @@ echo -e "${GREEN}✓ All scripts are now executable${NC}"
 echo ""
 
 # Step 4.5: Initialize Memory Bank
+# Memory Bank provides persistent project knowledge that survives Claude Code session restarts.
+# This step automatically creates a structured knowledge base in ~/memory-bank/orchestra/ with:
+#   - project-overview.md  : High-level project context and current state
+#   - tech-stack.md       : Technology stack, dependencies, and architecture
+#   - decisions.md        : Important decisions log (lightweight ADR)
+#   - progress.md         : Detailed progress tracking and milestones
+#   - next-steps.md       : Immediate action items and roadmap
+#
+# Benefits:
+#   - No more context re-explanation across sessions
+#   - All Orchestra agents share the same project understanding
+#   - Automatic documentation capture as you work
+#   - Progress visibility and milestone tracking
+#
+# This initialization is non-blocking - if it fails, setup continues normally.
+# You can run it manually later: bash .orchestra/scripts/init-memory-bank.sh
+#
+# Learn more: See MEMORY_BANK_GUIDE.md for complete documentation
+
 echo -e "${YELLOW}[4.5/7] Initializing Memory Bank...${NC}"
+echo -e "${BLUE}Memory Bank provides persistent project knowledge across Claude Code sessions${NC}"
 
 MEMORY_BANK_SCRIPT="$PROJECT_ROOT/.orchestra/scripts/init-memory-bank.sh"
 if [ -f "$MEMORY_BANK_SCRIPT" ] && [ -x "$MEMORY_BANK_SCRIPT" ]; then
     if bash "$MEMORY_BANK_SCRIPT"; then
         echo -e "${GREEN}✓ Memory Bank initialized successfully${NC}"
+        echo -e "${BLUE}  Location: ~/memory-bank/orchestra/${NC}"
+        echo -e "${BLUE}  Created: 5 structured template files (overview, tech-stack, decisions, progress, next-steps)${NC}"
     else
         echo -e "${YELLOW}⚠️  Memory Bank initialization failed (non-critical)${NC}"
-        echo -e "${YELLOW}   You can run it manually later: bash .orchestra/scripts/init-memory-bank.sh${NC}"
+        echo -e "${YELLOW}   Setup will continue. You can run initialization manually later:${NC}"
+        echo -e "${YELLOW}   bash .orchestra/scripts/init-memory-bank.sh${NC}"
     fi
 else
     echo -e "${YELLOW}⚠️  Memory Bank initialization script not found${NC}"
     echo -e "${YELLOW}   Expected at: ${MEMORY_BANK_SCRIPT}${NC}"
+    echo -e "${YELLOW}   Memory Bank will not be available until script is restored${NC}"
 fi
 
 echo ""
@@ -231,7 +255,13 @@ echo -e "   ${BLUE}• /screenshot - Capture web screenshots${NC}"
 echo -e "   ${BLUE}• 12 specialized AI agents (Alex, Riley, Skye, Finn, Eden, Kai, Leo, Iris, Nova, Mina, Theo, Blake)${NC}"
 echo -e "   ${BLUE}• Automated quality gates (before_task, before_pr, before_merge, before_deploy, after_deploy)${NC}"
 echo -e "   ${BLUE}• Multi-agent orchestration with parallel execution${NC}"
-echo -e "   ${BLUE}• Memory Bank - Persistent project knowledge across sessions (~/memory-bank/orchestra/)${NC}"
+echo ""
+echo -e "${YELLOW}5. Memory Bank (Persistent Project Knowledge):${NC}"
+echo -e "   ${BLUE}• Location: ~/memory-bank/orchestra/${NC}"
+echo -e "   ${BLUE}• 5 structured files: overview, tech-stack, decisions, progress, next-steps${NC}"
+echo -e "   ${BLUE}• Survives Claude Code session restarts${NC}"
+echo -e "   ${BLUE}• All agents share the same project context${NC}"
+echo -e "   ${BLUE}• Learn more: See MEMORY_BANK_GUIDE.md${NC}"
 echo ""
 
 echo -e "${GREEN}🎉 Setup complete! Install the plugin in Claude Code to start orchestrating!${NC}\n"
