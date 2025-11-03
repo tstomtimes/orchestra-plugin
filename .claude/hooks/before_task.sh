@@ -1,0 +1,1 @@
+/Users/tsutomumorishita/Documents/GitHub/orchestra/hooks/before_task.sh

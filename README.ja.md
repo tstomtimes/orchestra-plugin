@@ -67,6 +67,64 @@ Claude Codeで以下を実行：
 
 Claude Codeを再起動してすべての機能を有効化します。
 
+## 他のプロジェクトでOrchestraを使う
+
+Orchestra Pluginをインストール後、**使用するプロジェクトごと**に以下の設定を行ってください：
+
+### 1. 設定ファイルをコピー・設定
+
+Orchestraリポジトリから`.claude/settings.json`ファイルをコピーします：
+
+```bash
+# 使用先プロジェクトで
+cd /path/to/your-project
+
+# .claudeディレクトリがなければ作成
+mkdir -p .claude
+
+# Orchestraの設定をコピー
+cp /path/to/orchestra/.claude/settings.json .claude/settings.json
+```
+
+### 2. プラグインパスを更新
+
+**重要：** `.claude/settings.json`を編集し、Orchestraインストールパスを指定してください：
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "orchestra-marketplace": {
+      "source": {
+        "source": "directory",
+        "path": "/absolute/path/to/orchestra"  ← これを更新！
+      }
+    }
+  }
+}
+```
+
+`/absolute/path/to/orchestra`をOrchestraリポジトリをクローンした実際のフルパスに置き換えてください。
+
+**これにより有効になる機能：**
+- ✅ すべての安全なツールの自動承認（危険なコマンドは安全ガードでブロック）
+- ✅ 12個の専門エージェントへのアクセス
+- ✅ 自動フック実行（エージェントルーティング、安全ガード、品質ゲート）
+- ✅ スラッシュコマンド（`/browser`, `/screenshot`, `/orchestra-setup`）
+
+### 3. Claude Codeを再起動
+
+設定を反映させるため、Claude Codeを再起動します。
+
+### 4. すぐに使える
+
+これで、Orchestraのすべての機能がプロジェクトで利用可能になります：
+- ✅ 12個の専門エージェント（Alex, Riley, Skye, Finn, Eden, Kai, Leo, Iris, Nova, Mina, Theo, Blake）
+- ✅ 自動エージェントルーティング
+- ✅ 安全ガード付き自動承認（危険なコマンドのみブロック）
+- ✅ スラッシュコマンド（`/browser`, `/screenshot`, `/orchestra-setup`）
+
+**重要：** プラグインのhooks、agents、commandsは**自動的に動作**します。プロジェクトに追加のファイルは不要です。`.claude/settings.json`をコピーするだけで完了です。
+
 ### コーディング開始
 
 これまで通りClaude Codeを使用してください。Orchestra Pluginがすべてを自動的に強化します：

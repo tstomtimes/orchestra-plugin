@@ -67,6 +67,64 @@ Replace `/path/to/orchestra` with the full path to your cloned repository.
 
 Restart Claude Code to activate all features.
 
+## Using Orchestra in Other Projects
+
+After installing the Orchestra Plugin, **configure each project** where you want to use it:
+
+### 1. Copy and Configure Settings
+
+Copy the `.claude/settings.json` file from the Orchestra repository:
+
+```bash
+# In your project directory
+cd /path/to/your-project
+
+# Create .claude directory if it doesn't exist
+mkdir -p .claude
+
+# Copy Orchestra settings
+cp /path/to/orchestra/.claude/settings.json .claude/settings.json
+```
+
+### 2. Update Plugin Path
+
+**IMPORTANT:** Edit `.claude/settings.json` and update the `path` to point to your Orchestra installation:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "orchestra-marketplace": {
+      "source": {
+        "source": "directory",
+        "path": "/absolute/path/to/orchestra"  ← Update this!
+      }
+    }
+  }
+}
+```
+
+Replace `/absolute/path/to/orchestra` with the full path where you cloned the Orchestra repository.
+
+**What this enables:**
+- ✅ Auto-approval for all safe tools (dangerous commands blocked by safety guard)
+- ✅ Access to 12 specialized agents
+- ✅ Automatic hook execution (agent routing, safety guards, quality gates)
+- ✅ Slash commands (`/browser`, `/screenshot`, `/orchestra-setup`)
+
+### 3. Restart Claude Code
+
+Restart Claude Code to apply the configuration.
+
+### 4. Ready to Use
+
+All Orchestra features are now available in your project:
+- ✅ 12 specialized agents (Alex, Riley, Skye, Finn, Eden, Kai, Leo, Iris, Nova, Mina, Theo, Blake)
+- ✅ Automatic agent routing
+- ✅ Auto-approval with safety guard (only dangerous commands blocked)
+- ✅ Slash commands (`/browser`, `/screenshot`, `/orchestra-setup`)
+
+**Important:** The plugin's hooks, agents, and commands **work automatically**. No additional files needed in your project. Just copy `.claude/settings.json` and you're done.
+
 ### Start Coding
 
 Use Claude Code exactly as before. Orchestra Plugin enhances everything automatically:

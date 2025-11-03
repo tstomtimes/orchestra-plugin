@@ -83,7 +83,7 @@ You: "Make the dashboard load faster"
 🚨 MANDATORY ACTION REQUIRED:
 
    • Riley (Clarifier): User request contains ambiguous/subjective language
-     → IMMEDIATELY invoke: orchestra:😤 Riley
+     → IMMEDIATELY invoke: orchestra:🧐 Riley
      → Reason: Terms like 'fast', 'slow', 'better' require specific criteria
 
    • Nova (UI/UX Specialist): User interface work detected

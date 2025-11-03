@@ -140,126 +140,19 @@ echo -e "${GREEN}✓ Artifacts directories created${NC}"
 mkdir -p "$PROJECT_ROOT/.claude/hooks"
 mkdir -p "$PROJECT_ROOT/.claude/commands"
 
-# Create .claude/settings.json if it doesn't exist
-if [ ! -f "$PROJECT_ROOT/.claude/settings.json" ]; then
-    cat > "$PROJECT_ROOT/.claude/settings.json" << 'SETTINGS_EOF'
-{
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/user-prompt-submit.sh"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "gh pr create",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/before_pr.sh",
-            "timeout": 300
-          }
-        ]
-      },
-      {
-        "matcher": "git merge",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/before_merge.sh",
-            "timeout": 300
-          }
-        ]
-      },
-      {
-        "matcher": "vercel deploy",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/before_deploy.sh",
-            "timeout": 300
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "vercel deploy",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/after_deploy.sh",
-            "timeout": 300
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/before_task.sh",
-            "timeout": 60
-          }
-        ]
-      }
-    ]
-  },
-  "permissions": {
-    "allow": [
-      "Bash(./run-mcp.sh:*)",
-      "Bash(./hooks/*.sh:*)",
-      "Bash(./mcp-servers/*.sh:*)",
-      "Bash(bash -c:*)",
-      "Bash(chmod:*)",
-      "Bash(git:*)",
-      "Bash(npm:*)",
-      "Bash(npx:*)",
-      "Bash(curl:*)",
-      "Bash(pkill:*)",
-      "Bash(lsof:*)",
-      "Bash(python3:*)",
-      "Bash(cat:*)",
-      "Bash(ls:*)",
-      "Bash(find:*)",
-      "Bash(grep:*)",
-      "Bash(awk:*)",
-      "Bash(head:*)",
-      "Bash(tail:*)",
-      "Bash(echo:*)"
-    ],
-    "deny": [],
-    "ask": []
-  },
-  "enabledPlugins": {
-    "orchestra@orchestra-marketplace": true
-  },
-  "extraKnownMarketplaces": {
-    "orchestra-marketplace": {
-      "source": {
-        "source": "directory",
-        "path": "."
-      }
-    }
-  }
-}
-SETTINGS_EOF
-    echo -e "${GREEN}✓ Created .claude/settings.json${NC}"
+# Check .claude/settings.json (managed by git)
+if [ -f "$PROJECT_ROOT/.claude/settings.json" ]; then
+    echo -e "${GREEN}✓ .claude/settings.json found (git-managed)${NC}"
+    echo -e "${BLUE}  Auto-approve enabled with safety guard hook${NC}"
 else
-    echo -e "${GREEN}✓ .claude/settings.json already exists${NC}"
+    echo -e "${YELLOW}⚠️  .claude/settings.json not found${NC}"
+    echo -e "${YELLOW}  This file is git-managed. Restore from repository or git checkout.${NC}"
 fi
 
-# Symlink auto-approve hook
+# Symlink safety guard hook
 ln -sf "$PROJECT_ROOT/hooks/user-prompt-submit.sh" "$PROJECT_ROOT/.claude/hooks/user-prompt-submit.sh"
-echo -e "${GREEN}✓ Auto-approve hook installed${NC}"
-echo -e "${BLUE}  (Enable autonomous operation - blocks dangerous commands only)${NC}"
+echo -e "${GREEN}✓ Safety guard hook installed${NC}"
+echo -e "${BLUE}  (Auto-approve all tools - blocks dangerous commands via PreToolUse hook)${NC}"
 
 # Symlink slash commands
 ln -sf "$PROJECT_ROOT/commands/browser.md" "$PROJECT_ROOT/.claude/commands/browser.md"
@@ -327,16 +220,22 @@ echo -e "${GREEN}🎉 Setup complete! Install the plugin in Claude Code to start
 read -p "$(echo -e ${YELLOW}Would you like to start the Browser MCP server now? [y/N]: ${NC})" -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    cd "$PROJECT_ROOT/mcp-servers"
-    echo -e "${BLUE}Starting Browser MCP server...${NC}"
-    npm run browser &
-    sleep 3
-
-    # Test health
-    if curl -s http://localhost:3030/health > /dev/null 2>&1; then
-        echo -e "${GREEN}✓ Browser MCP server is running on http://localhost:3030${NC}"
+    # Check if server is already running
+    if curl -s http://localhost:9222/health > /dev/null 2>&1; then
+        echo -e "${GREEN}✓ Browser MCP server is already running on http://localhost:9222${NC}"
     else
-        echo -e "${RED}❌ Failed to start Browser MCP server${NC}"
+        cd "$PROJECT_ROOT/mcp-servers"
+        echo -e "${BLUE}Starting Browser MCP server...${NC}"
+        npm run browser &
+        sleep 3
+
+        # Test health
+        if curl -s http://localhost:9222/health > /dev/null 2>&1; then
+            echo -e "${GREEN}✓ Browser MCP server is running on http://localhost:9222${NC}"
+        else
+            echo -e "${RED}❌ Failed to start Browser MCP server${NC}"
+            echo -e "${YELLOW}⚠️  Check if port 9222 is already in use: lsof -i :9222${NC}"
+        fi
     fi
 fi
 

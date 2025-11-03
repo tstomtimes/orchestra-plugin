@@ -12,7 +12,8 @@ Execute the Orchestra setup script to install:
 - Node.js dependencies (Express, Playwright, TypeScript)
 - Playwright Chromium browser
 - Python virtual environment and packages (elevenlabs, requests)
-- Configure hooks and permissions
+- Configure hooks and permissions (.claude/settings.json with auto-approve)
+- Install safety guard hook (blocks dangerous operations only)
 - Create necessary directories (artifacts, etc.)
 
 ## Steps
@@ -61,3 +62,16 @@ Execute the Orchestra setup script to install:
 - Only GITHUB_TOKEN is required; all other tokens are optional
 - The script creates symlinks for hooks and slash commands
 - Browser server can be started separately with `/browser` command
+
+## Auto-Approval & Safety
+
+The setup creates `.claude/settings.json` with:
+- `"permissions.allow": ["*"]` - Auto-approve all tools (no confirmation dialogs)
+- Safety guard hook (`hooks/user-prompt-submit.sh`) blocks dangerous operations:
+  - `rm -rf /`, system file modifications
+  - `sudo shutdown/reboot`
+  - `git push --force`
+  - Database drops (`DROP DATABASE/TABLE`)
+  - And more...
+
+This enables autonomous operation while preventing destructive actions.

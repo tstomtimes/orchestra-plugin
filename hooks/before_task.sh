@@ -21,26 +21,37 @@ if echo "$PROMPT_LOWER" | grep -qE "(what|how|why|show|explain|tell).*\?"; then
   exit 0
 fi
 
-echo ""
-echo "💡 Task Clarity Best Practice"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo ""
-echo "Before starting implementation, ensure your task has:"
-echo "   ✓ Clear acceptance criteria"
-echo "   ✓ Defined scope and boundaries"
-echo "   ✓ Success metrics or test cases"
-echo ""
+# Build context message
+CONTEXT=$(cat <<EOF
+
+💡 Task Clarity Best Practice
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before starting implementation, ensure your task has:
+   ✓ Clear acceptance criteria
+   ✓ Defined scope and boundaries
+   ✓ Success metrics or test cases
+
+EOF
+)
 
 # Check for ambiguous language in the prompt
 if echo "$PROMPT_LOWER" | grep -qE "(fast|faster|slow|slower|easy|simple|clean|better|improve|optimize)"; then
-  echo "⚠️  Detected subjective language: Consider clarifying with Riley agent"
-  echo ""
+  CONTEXT+=$(cat <<EOF
+⚠️  Detected subjective language: Consider clarifying with Riley agent
+
+EOF
+)
 fi
 
 # Check if task file exists for formal task tracking
 TASK_FILE=".claude/current-task.md"
 if [ -f "$TASK_FILE" ]; then
-  echo "📋 Task definition found: $TASK_FILE"
+  CONTEXT+=$(cat <<EOF
+📋 Task definition found: $TASK_FILE
+
+EOF
+)
 
   TASK_CONTENT=$(cat "$TASK_FILE")
 
@@ -48,28 +59,41 @@ if [ -f "$TASK_FILE" ]; then
   has_issues=false
 
   if ! echo "$TASK_CONTENT" | grep -qiE "(acceptance criteria|AC:|done when|success criteria)"; then
-    echo "   ⚠️  Missing acceptance criteria"
+    CONTEXT+="   ⚠️  Missing acceptance criteria"$'\n'
     has_issues=true
   fi
 
   if ! echo "$TASK_CONTENT" | grep -qiE "(scope|in scope|out of scope|boundaries)"; then
-    echo "   ⚠️  Missing scope definition"
+    CONTEXT+="   ⚠️  Missing scope definition"$'\n'
     has_issues=true
   fi
 
   if ! echo "$TASK_CONTENT" | grep -qiE "(test|testing|verify|validation)"; then
-    echo "   ⚠️  Missing test plan"
+    CONTEXT+="   ⚠️  Missing test plan"$'\n'
     has_issues=true
   fi
 
   if [ "$has_issues" = false ]; then
-    echo "   ✅ Task definition looks good"
+    CONTEXT+="   ✅ Task definition looks good"$'\n'
   fi
-  echo ""
+  CONTEXT+=$'\n'
 fi
 
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo ""
+CONTEXT+=$(cat <<EOF
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+)
+
+# Output JSON format for Claude's context
+cat <<EOF
+{
+  "hookSpecificOutput": {
+    "hookEventName": "UserPromptSubmit",
+    "additionalContext": $(echo "$CONTEXT" | jq -Rs .)
+  }
+}
+EOF
 
 # Always approve - this is just informational
 exit 0

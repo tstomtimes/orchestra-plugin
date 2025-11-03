@@ -32,8 +32,8 @@ if echo "$PROMPT_LOWER" | grep -qE "(fast|faster|slow|slower|easy to use|intuiti
 fi
 
 # --- Priority 2: Major Feature Addition → Alex ---
-if echo "$PROMPT_LOWER" | grep -qE "(add new|build new|implement new|create new|新しい.*追加|新規.*作成)"; then
-    if echo "$PROMPT_LOWER" | grep -qE "(system|feature|authentication|auth|認証|payment|決済|api)"; then
+if echo "$PROMPT_LOWER" | grep -qE "(add new|build new|implement new|create new|新しい.*追加|新規.*作成|作りたい|作る|build|make|開発したい)"; then
+    if echo "$PROMPT_LOWER" | grep -qE "(system|feature|authentication|auth|認証|payment|決済|api|site|サイト|app|アプリ|website|ウェブサイト|service|サービス)"; then
         MATCHED_AGENTS+=("Alex")
         AGENT_MATCHED=true
     fi
@@ -41,14 +41,14 @@ fi
 
 # Authentication specifically triggers Alex + Iris
 if echo "$PROMPT_LOWER" | grep -qE "(authentication|auth|login|認証|ログイン|oauth|jwt|session)"; then
-    if ! [[ " ${MATCHED_AGENTS[@]} " =~ " Alex " ]]; then
+    if ! [[ " ${MATCHED_AGENTS[@]+"${MATCHED_AGENTS[@]}"} " =~ " Alex " ]]; then
         MATCHED_AGENTS+=("Alex")
         AGENT_MATCHED=true
     fi
 fi
 
 # --- Priority 3: UI/UX → Nova ---
-if echo "$PROMPT_LOWER" | grep -qE "(ui|dashboard|ダッシュボード|component|コンポーネント|form|フォーム|design|デザイン|layout|responsive|accessibility|a11y|lighthouse)"; then
+if echo "$PROMPT_LOWER" | grep -qE "(ui|dashboard|ダッシュボード|component|コンポーネント|form|フォーム|design|デザイン|layout|responsive|accessibility|a11y|lighthouse|portfolio|ポートフォリオ|landing.*page|ランディング.*ページ|website|ウェブサイト|site.*design|サイト.*デザイン)"; then
     MATCHED_AGENTS+=("Nova")
     AGENT_MATCHED=true
 fi
@@ -77,82 +77,134 @@ if echo "$PROMPT_LOWER" | grep -qE "(security|セキュリティ|secret|シー�
     AGENT_MATCHED=true
 fi
 
-# If any agents matched, output routing reminder
-if [ "$AGENT_MATCHED" = true ]; then
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo "🎭 AGENT AUTO-ROUTING REMINDER"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo ""
-    echo "⚠️  CRITICAL: Detected specialized domain in user request."
-    echo ""
-    echo "📋 Matched Agents: ${MATCHED_AGENTS[*]}"
-    echo ""
-    echo "🚨 MANDATORY ACTION REQUIRED:"
-    echo ""
+# --- Default: If no specific agent matched, route to Alex (Project Conductor) ---
+if [ "$AGENT_MATCHED" = false ]; then
+    MATCHED_AGENTS+=("Alex")
+    AGENT_MATCHED=true
+fi
 
-    # Provide specific routing instructions based on matched agents
+# If any agents matched, output routing reminder as context for Claude
+if [ "$AGENT_MATCHED" = true ]; then
+    # Build context message
+    CONTEXT=$(cat <<EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎭 AGENT AUTO-ROUTING REMINDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  CRITICAL: Detected specialized domain in user request.
+
+📋 Matched Agents: ${MATCHED_AGENTS[*]+"${MATCHED_AGENTS[*]}"}
+
+🚨 MANDATORY ACTION REQUIRED:
+
+EOF
+)
+
+    # Add agent-specific instructions
     for agent in "${MATCHED_AGENTS[@]}"; do
         case $agent in
             "Riley")
-                echo "   • Riley (Clarifier): User request contains ambiguous/subjective language"
-                echo "     → IMMEDIATELY invoke: orchestra:😤 Riley"
-                echo "     → Reason: Terms like 'fast', 'slow', 'better' require specific criteria"
-                echo ""
+                CONTEXT+=$(cat <<EOF
+
+   • Riley (Clarifier): User request contains ambiguous/subjective language
+     → IMMEDIATELY invoke: Task tool with subagent_type="orchestra:🧐 Riley"
+     → Reason: Terms like 'fast', 'slow', 'better' require specific criteria
+
+EOF
+)
                 ;;
             "Alex")
-                echo "   • Alex (Project Conductor): Major feature addition detected"
-                echo "     → IMMEDIATELY invoke: orchestra:🙂 Alex"
-                echo "     → Reason: New systems need scope definition and coordination"
-                echo ""
+                CONTEXT+=$(cat <<EOF
+
+   • Alex (Project Conductor): Major feature addition detected
+     → IMMEDIATELY invoke: Task tool with subagent_type="orchestra:🙂 Alex"
+     → Reason: New systems need scope definition and coordination
+
+EOF
+)
                 ;;
             "Nova")
-                echo "   • Nova (UI/UX Specialist): User interface work detected"
-                echo "     → IMMEDIATELY invoke: orchestra:😄 Nova"
-                echo "     → Reason: UI/UX requires accessibility, performance, and design expertise"
-                echo ""
+                CONTEXT+=$(cat <<EOF
+
+   • Nova (UI/UX Specialist): User interface work detected
+     → IMMEDIATELY invoke: Task tool with subagent_type="orchestra:😄 Nova"
+     → Reason: UI/UX requires accessibility, performance, and design expertise
+
+EOF
+)
                 ;;
             "Leo")
-                echo "   • Leo (Database Architect): Database schema work detected"
-                echo "     → IMMEDIATELY invoke: orchestra:😌 Leo"
-                echo "     → Reason: Schema changes need proper design, migrations, and RLS policies"
-                echo ""
+                CONTEXT+=$(cat <<EOF
+
+   • Leo (Database Architect): Database schema work detected
+     → IMMEDIATELY invoke: Task tool with subagent_type="orchestra:😌 Leo"
+     → Reason: Schema changes need proper design, migrations, and RLS policies
+
+EOF
+)
                 ;;
             "Mina")
-                echo "   • Mina (Integration Specialist): External service integration detected"
-                echo "     → IMMEDIATELY invoke: orchestra:😊 Mina"
-                echo "     → Reason: Integrations require secure config and error handling"
-                echo ""
+                CONTEXT+=$(cat <<EOF
+
+   • Mina (Integration Specialist): External service integration detected
+     → IMMEDIATELY invoke: Task tool with subagent_type="orchestra:😊 Mina"
+     → Reason: Integrations require secure config and error handling
+
+EOF
+)
                 ;;
             "Kai")
-                echo "   • Kai (System Architect): Architectural decision detected"
-                echo "     → IMMEDIATELY invoke: orchestra:🤔 Kai"
-                echo "     → Reason: Architecture changes need design review and ADR documentation"
-                echo ""
+                CONTEXT+=$(cat <<EOF
+
+   • Kai (System Architect): Architectural decision detected
+     → IMMEDIATELY invoke: Task tool with subagent_type="orchestra:🤔 Kai"
+     → Reason: Architecture changes need design review and ADR documentation
+
+EOF
+)
                 ;;
             "Iris")
-                echo "   • Iris (Security Auditor): Security-critical work detected"
-                echo "     → IMMEDIATELY invoke: orchestra:🤨 Iris"
-                echo "     → Reason: Security requires audit for vulnerabilities and secret handling"
-                echo ""
+                CONTEXT+=$(cat <<EOF
+
+   • Iris (Security Auditor): Security-critical work detected
+     → IMMEDIATELY invoke: Task tool with subagent_type="orchestra:🤨 Iris"
+     → Reason: Security requires audit for vulnerabilities and secret handling
+
+EOF
+)
                 ;;
         esac
     done
 
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo ""
-    echo "❌ DO NOT:"
-    echo "   - Use AskUserQuestion without checking routing rules"
-    echo "   - Start exploring codebase yourself"
-    echo "   - Create TodoWrite and handle it yourself"
-    echo ""
-    echo "✅ DO THIS INSTEAD:"
-    echo "   1. Use the Task tool to invoke the appropriate agent(s)"
-    echo "   2. Let the specialist agent handle the work"
-    echo "   3. Review their output and coordinate next steps"
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo ""
+    CONTEXT+=$(cat <<EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ DO NOT:
+   - Use AskUserQuestion without checking routing rules
+   - Start exploring codebase yourself
+   - Create TodoWrite and handle it yourself
+
+✅ DO THIS INSTEAD:
+   1. Use the Task tool to invoke the appropriate agent(s)
+   2. Let the specialist agent handle the work
+   3. Review their output and coordinate next steps
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+)
+
+    # Output JSON format for Claude's context
+    cat <<EOF
+{
+  "hookSpecificOutput": {
+    "hookEventName": "UserPromptSubmit",
+    "additionalContext": $(echo "$CONTEXT" | jq -Rs .)
+  }
+}
+EOF
 fi
 
 # Always approve (exit 0) - we're just adding reminders, not blocking
