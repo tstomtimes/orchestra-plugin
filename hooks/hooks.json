@@ -25,6 +25,11 @@
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/user-prompt-submit.sh",
             "description": "Safety Guard: Blocks dangerous operations (rm -rf, system files, etc.)"
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/pre-tool-use-compliance-checker.sh",
+            "description": "Routing Compliance: Verifies Task tool is called first when agent routing is required"
           }
         ]
       },
