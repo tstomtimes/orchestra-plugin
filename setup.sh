@@ -125,12 +125,31 @@ cd "$PROJECT_ROOT"
 # Make all shell scripts executable
 chmod +x mcp-servers/*.sh
 chmod +x hooks/*.sh
+chmod +x .orchestra/scripts/*.sh 2>/dev/null || true
 echo -e "${GREEN}✓ All scripts are now executable${NC}"
 
 echo ""
 
+# Step 4.5: Initialize Memory Bank
+echo -e "${YELLOW}[4.5/7] Initializing Memory Bank...${NC}"
+
+MEMORY_BANK_SCRIPT="$PROJECT_ROOT/.orchestra/scripts/init-memory-bank.sh"
+if [ -f "$MEMORY_BANK_SCRIPT" ] && [ -x "$MEMORY_BANK_SCRIPT" ]; then
+    if bash "$MEMORY_BANK_SCRIPT"; then
+        echo -e "${GREEN}✓ Memory Bank initialized successfully${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Memory Bank initialization failed (non-critical)${NC}"
+        echo -e "${YELLOW}   You can run it manually later: bash .orchestra/scripts/init-memory-bank.sh${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠️  Memory Bank initialization script not found${NC}"
+    echo -e "${YELLOW}   Expected at: ${MEMORY_BANK_SCRIPT}${NC}"
+fi
+
+echo ""
+
 # Step 5: Create artifacts directory and setup Claude hooks
-echo -e "${YELLOW}[5/6] Setting up artifacts and hooks...${NC}"
+echo -e "${YELLOW}[5/7] Setting up artifacts and hooks...${NC}"
 
 mkdir -p "$PROJECT_ROOT/artifacts/browser"
 mkdir -p "$PROJECT_ROOT/artifacts/commits"
@@ -163,7 +182,7 @@ echo -e "${GREEN}✓ Slash commands installed (/browser, /screenshot, /orchestra
 echo ""
 
 # Step 6: Test installations
-echo -e "${YELLOW}[6/6] Testing installations...${NC}"
+echo -e "${YELLOW}[6/7] Testing installations...${NC}"
 
 # Test ElevenLabs server (if API key is set)
 if grep -q "ELEVENLABS_API_KEY=sk-" "$PROJECT_ROOT/.env" 2>/dev/null; then
@@ -212,6 +231,7 @@ echo -e "   ${BLUE}• /screenshot - Capture web screenshots${NC}"
 echo -e "   ${BLUE}• 12 specialized AI agents (Alex, Riley, Skye, Finn, Eden, Kai, Leo, Iris, Nova, Mina, Theo, Blake)${NC}"
 echo -e "   ${BLUE}• Automated quality gates (before_task, before_pr, before_merge, before_deploy, after_deploy)${NC}"
 echo -e "   ${BLUE}• Multi-agent orchestration with parallel execution${NC}"
+echo -e "   ${BLUE}• Memory Bank - Persistent project knowledge across sessions (~/memory-bank/orchestra/)${NC}"
 echo ""
 
 echo -e "${GREEN}🎉 Setup complete! Install the plugin in Claude Code to start orchestrating!${NC}\n"
