@@ -19,16 +19,12 @@ echo "Target Project: $TARGET_PROJECT"
 echo ""
 
 # Create .claude directory if it doesn't exist
-mkdir -p "$TARGET_PROJECT/.claude/hooks"
+mkdir -p "$TARGET_PROJECT/.claude"
 
-# Create symlink to Orchestra's hook-loader
-ln -sf "$SCRIPT_DIR/.claude/hooks/hook-loader.sh" "$TARGET_PROJECT/.claude/hooks/hook-loader.sh"
-echo "✓ Created hook-loader.sh symlink"
-
-# Generate settings.json with proper paths
+# Generate settings.json with absolute paths
 SETTINGS_FILE="$TARGET_PROJECT/.claude/settings.json"
 
-cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
+cat > "$SETTINGS_FILE" << SETTINGS_EOF
 {
   "hooks": {
     "UserPromptSubmit": [
@@ -37,12 +33,12 @@ cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh agent-routing-reminder",
+            "command": "bash $SCRIPT_DIR/hooks/agent-routing-reminder.sh",
             "description": "Agent Auto-Routing: Analyzes prompts and suggests appropriate specialist agents"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh before_task",
+            "command": "bash $SCRIPT_DIR/hooks/before_task.sh",
             "description": "Task Clarity Reminder: Suggests best practices for well-defined tasks"
           }
         ]
@@ -54,12 +50,12 @@ cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh user-prompt-submit",
+            "command": "bash $SCRIPT_DIR/hooks/user-prompt-submit.sh",
             "description": "Safety Guard: Blocks dangerous operations (rm -rf, system files, etc.)"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh pre-tool-use-compliance-checker",
+            "command": "bash $SCRIPT_DIR/hooks/pre-tool-use-compliance-checker.sh",
             "description": "Routing Compliance: Verifies Task tool is called first when agent routing is required"
           }
         ]
@@ -69,7 +65,7 @@ cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh workflow-dispatcher",
+            "command": "bash $SCRIPT_DIR/hooks/workflow-dispatcher.sh",
             "description": "Workflow Quality Gates: Routes PR/merge/deploy commands to appropriate validation hooks"
           }
         ]
@@ -81,7 +77,7 @@ cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh workflow-post-dispatcher",
+            "command": "bash $SCRIPT_DIR/hooks/workflow-post-dispatcher.sh",
             "description": "Post-Workflow Validation: Runs smoke tests and validation after deployments"
           }
         ]
@@ -91,7 +87,7 @@ cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh post_code_write",
+            "command": "bash $SCRIPT_DIR/hooks/post_code_write.sh",
             "description": "Progress Tracker Integration: Updates progress tracking and displays progress in chat"
           }
         ]
@@ -103,7 +99,7 @@ cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/hook-loader.sh session-start",
+            "command": "bash $SCRIPT_DIR/hooks/session-start.sh",
             "description": "Welcome message for Orchestra Plugin"
           }
         ]
@@ -113,9 +109,9 @@ cat > "$SETTINGS_FILE" << 'SETTINGS_EOF'
 }
 SETTINGS_EOF
 
-echo "✓ Created .claude/settings.json"
+echo "✓ Created .claude/settings.json with absolute paths"
 
-# Create or update .claude.json to export ORCHESTRA_ROOT for cross-project usage
+# Create or update .claude.json to reference Orchestra root
 CLAUDE_JSON="$TARGET_PROJECT/.claude.json"
 
 if [ ! -f "$CLAUDE_JSON" ]; then
@@ -126,7 +122,7 @@ if [ ! -f "$CLAUDE_JSON" ]; then
   }
 }
 CLAUDE_JSON_EOF
-  echo "✓ Created .claude.json with ORCHESTRA_ROOT environment variable"
+  echo "✓ Created .claude.json with ORCHESTRA_ROOT reference"
 else
   echo "ℹ  .claude.json already exists (not modified)"
 fi
@@ -139,9 +135,4 @@ echo "Next steps:"
 echo "1. Run: cd $TARGET_PROJECT && claude"
 echo "2. Verify Orchestra plugin loads with the welcome message"
 echo "3. Check that agents are available for coordination"
-echo ""
-echo "To use Orchestra from other projects:"
-echo "  export ORCHESTRA_ROOT=$SCRIPT_DIR"
-echo "  cd /path/to/other-project"
-echo "  claude"
 echo ""

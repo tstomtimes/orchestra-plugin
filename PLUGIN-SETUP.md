@@ -28,33 +28,51 @@ The hooks will be automatically loaded from the `.claude/` directory.
 
 ### For Other Projects
 
-To use the Orchestra plugin in other projects, you have several options:
-
-#### Option 1: Environment Variable Setup (Recommended for Development)
-
-Set the `ORCHESTRA_ROOT` environment variable to point to your Orchestra installation:
+To use the Orchestra plugin in other projects, use the automated setup script:
 
 ```bash
-# Add to your shell profile (~/.bashrc, ~/.zshrc, etc.)
-export ORCHESTRA_ROOT="/path/to/orchestra"
+# Run the setup script
+bash /path/to/orchestra/setup-plugin.sh /path/to/your-project
 
-# Then run Claude from your project
+# Then use Claude from your project
 cd /path/to/your-project
 claude
 ```
 
-#### Option 2: Symlink Setup (Recommended for Production)
+Or manually configure your project following the methods below:
 
-Create a symbolic link from your project's `.claude` directory to the Orchestra plugin:
+---
+
+## Installation Methods
+
+### Method 1: Automated Setup (Recommended)
+
+Use the included `setup-plugin.sh` script to automatically configure your project:
 
 ```bash
-cd /path/to/your-project
-mkdir -p .claude/hooks
-ln -s /path/to/orchestra/.claude/settings.json .claude/settings.json
-ln -s /path/to/orchestra/.claude/hooks /path/to/your-project/.claude/orchestra-hooks
+bash /path/to/orchestra/setup-plugin.sh /path/to/your-project
 ```
 
-Then in your `.claude/settings.json`, update hook commands to reference the symlink:
+This creates:
+- `.claude/settings.json` with absolute paths to the Orchestra hooks
+- `.claude/hooks/hook-loader.sh` symlink (for reference)
+- `.claude.json` with environment variable configuration
+
+### Method 2: NPM/PNPM Package (Future)
+
+Once published as a package, you'll be able to install via:
+
+```bash
+npm install @orchestra/plugin
+# or
+pnpm add @orchestra/plugin
+```
+
+### Method 3: Manual Configuration
+
+If you prefer to set up manually:
+
+1. Create `.claude/settings.json` in your project:
 
 ```json
 {
@@ -65,7 +83,7 @@ Then in your `.claude/settings.json`, update hook commands to reference the syml
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/orchestra-hooks/hook-loader.sh session-start"
+            "command": "bash /path/to/orchestra/hooks/session-start.sh"
           }
         ]
       }
@@ -74,61 +92,32 @@ Then in your `.claude/settings.json`, update hook commands to reference the syml
 }
 ```
 
-#### Option 3: Direct Copy (Standalone)
-
-Copy the Orchestra `.claude` directory structure to your project:
-
-```bash
-cp -r /path/to/orchestra/.claude /path/to/your-project/.claude
-cp -r /path/to/orchestra/hooks /path/to/your-project/hooks
-```
-
----
-
-## Installation Methods
-
-### Method 1: NPM/PNPM Package (Future)
-
-Once published as a package, you'll be able to install via:
-
-```bash
-npm install @orchestra/plugin
-# or
-pnpm add @orchestra/plugin
-```
-
-### Method 2: Git Submodule
-
-Add Orchestra as a submodule to your project:
-
-```bash
-git submodule add https://github.com/anthropics/orchestra.git ./orchestra-plugin
-export ORCHESTRA_ROOT="./orchestra-plugin"
-```
-
-### Method 3: Manual Installation
-
-Clone the Orchestra repository:
-
-```bash
-git clone https://github.com/anthropics/orchestra.git
-export ORCHESTRA_ROOT="/path/to/orchestra"
-```
+2. Replace `/path/to/orchestra` with your actual Orchestra installation path
 
 ---
 
 ## Configuration
 
-### Using ORCHESTRA_ROOT Environment Variable
+### Hook Path Resolution
 
-The hook-loader script checks for the `ORCHESTRA_ROOT` environment variable:
+The plugin uses **absolute paths** in `.claude/settings.json` to ensure hooks are found regardless of:
+- The current working directory
+- How Claude Code is invoked
+- Where the Orchestra project is installed
+
+Example hook command:
+```bash
+bash /Users/tstomtimes/Documents/GitHub/orchestra/hooks/session-start.sh
+```
+
+### Finding Your Orchestra Installation Path
 
 ```bash
-# Set environment variable
-export ORCHESTRA_ROOT="/path/to/orchestra"
+# Get the absolute path to Orchestra
+cd /path/to/orchestra
+pwd
 
-# Run Claude (hooks will be loaded correctly)
-claude
+# Output will show the full path to use in settings.json
 ```
 
 ### Verifying Installation
