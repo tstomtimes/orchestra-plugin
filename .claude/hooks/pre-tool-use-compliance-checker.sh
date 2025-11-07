@@ -1,0 +1,1 @@
+../../hooks/pre-tool-use-compliance-checker.sh

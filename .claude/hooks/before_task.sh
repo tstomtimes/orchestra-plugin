@@ -1,0 +1,1 @@
+../../hooks/before_task.sh

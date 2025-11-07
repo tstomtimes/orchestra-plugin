@@ -1,1 +1,1 @@
-/Users/tstomtimes/Documents/GitHub/orchestra/hooks/user-prompt-submit.sh
+../../hooks/user-prompt-submit.sh
